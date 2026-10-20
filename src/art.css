@@ -1,0 +1,367 @@
+/* ───────────── Camada artística: jogos, memes e movimento ───────────── */
+
+/* Cursor de mira (só com mouse) */
+@media (pointer: fine) {
+  html {
+    cursor:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg stroke='%230a0a0a' stroke-width='4'%3E%3Cpath d='M14 2v7M14 19v7M2 14h7M19 14h7'/%3E%3C/g%3E%3Cg stroke='%23f2f2f2' stroke-width='2'%3E%3Cpath d='M14 2v7M14 19v7M2 14h7M19 14h7'/%3E%3C/g%3E%3Crect x='12.5' y='12.5' width='3' height='3' fill='%23cbef4a'/%3E%3C/svg%3E")
+        14 14,
+      crosshair;
+  }
+  a,
+  button:not(:disabled),
+  [role='button'],
+  summary,
+  label {
+    cursor:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg stroke='%230a0a0a' stroke-width='4'%3E%3Cpath d='M14 2v7M14 19v7M2 14h7M19 14h7'/%3E%3C/g%3E%3Cg stroke='%23cbef4a' stroke-width='2'%3E%3Cpath d='M14 2v7M14 19v7M2 14h7M19 14h7'/%3E%3C/g%3E%3Ccircle cx='14' cy='14' r='3' fill='%23cbef4a'/%3E%3C/svg%3E")
+        14 14,
+      pointer;
+  }
+}
+
+@utility font-pixel {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+/* Texto vazado: só o contorno (a letra preenche no hover do .wm-letter) */
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-line-strong);
+}
+
+/* Fundo pontilhado com máscara radial */
+.dot-grid {
+  background-image: radial-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* Faixas que correm (marquee) */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+.marquee[data-reverse] .marquee-track {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+
+/* Letras do wordmark: entram em sequência e pulam no hover */
+.wm-letter {
+  display: inline-block;
+  transition:
+    transform 260ms cubic-bezier(0.3, 1.6, 0.5, 1),
+    color 160ms ease,
+    text-shadow 160ms ease;
+}
+.wm-letter:hover {
+  transform: translateY(-0.07em) rotate(-5deg);
+  color: var(--color-accent);
+  text-shadow:
+    0.035em 0.035em 0 var(--color-pop-pink),
+    -0.02em -0.02em 0 var(--color-pop-cyan);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wm-letter {
+    animation: letter-in 700ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    animation-delay: calc(var(--i, 0) * 55ms);
+  }
+}
+@keyframes letter-in {
+  from {
+    opacity: 0;
+    translate: 0 0.35em;
+    rotate: -8deg;
+  }
+}
+
+/* Glitch periódico (RGB split + fatias) */
+.glitch {
+  animation: glitch 7s steps(1) infinite;
+}
+@keyframes glitch {
+  0%,
+  89%,
+  100% {
+    text-shadow: none;
+    transform: none;
+    clip-path: none;
+  }
+  90% {
+    text-shadow:
+      -0.04em 0 var(--color-pop-pink),
+      0.04em 0 var(--color-pop-cyan);
+    transform: translateX(-0.02em) skewX(-6deg);
+  }
+  92% {
+    clip-path: inset(18% 0 46% 0);
+    transform: translateX(0.04em);
+  }
+  94% {
+    clip-path: inset(58% 0 8% 0);
+    transform: translateX(-0.04em);
+    text-shadow:
+      0.05em 0 var(--color-pop-pink),
+      -0.05em 0 var(--color-pop-cyan);
+  }
+  96% {
+    clip-path: none;
+    text-shadow:
+      -0.02em 0 var(--color-accent),
+      0.02em 0 var(--color-pop-pink);
+    transform: none;
+  }
+}
+
+/* Adesivos arrastáveis */
+.sticker {
+  position: absolute;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  filter: drop-shadow(4px 5px 0 rgb(0 0 0 / 0.7));
+  transition: scale 180ms ease;
+}
+.sticker:hover {
+  scale: 1.06;
+}
+.sticker[data-dragging] {
+  cursor: grabbing;
+  scale: 1.12;
+  z-index: 20;
+}
+.sticker-inner {
+  animation: bob var(--bob-duration, 4s) ease-in-out infinite;
+  animation-delay: var(--bob-delay, 0s);
+}
+@keyframes bob {
+  50% {
+    transform: translateY(-7px);
+  }
+}
+.bob {
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+/* Inclinação 3D que segue o mouse */
+.tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 220ms ease-out;
+}
+.tilt-shine {
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.22), transparent 55%);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.tilt:hover .tilt-shine {
+  opacity: 1;
+}
+
+/* Linhas de tela CRT */
+.scanlines {
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgb(0 0 0 / 0.28) 0 1px, transparent 1px 3px);
+}
+
+/* Estática de TV (canal dark) */
+.tv-noise {
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: noise 0.6s steps(6) infinite;
+}
+@keyframes noise {
+  0% {
+    background-position: 0 0;
+  }
+  20% {
+    background-position: -50px 30px;
+  }
+  40% {
+    background-position: 40px -60px;
+  }
+  60% {
+    background-position: -70px -20px;
+  }
+  80% {
+    background-position: 20px 70px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+.flicker {
+  animation: flicker 5s linear infinite;
+}
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  54%,
+  58%,
+  100% {
+    opacity: 1;
+  }
+  19%,
+  21%,
+  55%,
+  57% {
+    opacity: 0.35;
+  }
+}
+.caret::after {
+  content: '▌';
+  margin-left: 0.1em;
+  color: var(--color-pop-red);
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Barras de HUD que enchem */
+.hud-fill {
+  transform-origin: left;
+  animation: hud-fill 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes hud-fill {
+  from {
+    scale: 0 1;
+  }
+}
+
+/* Loading que trava em 99% */
+.loading-fill {
+  transform-origin: left;
+  animation: loading 3.2s steps(12) both;
+}
+@keyframes loading {
+  from {
+    scale: 0 1;
+  }
+}
+
+/* Hitmarker ao clicar */
+.hitmarker {
+  position: fixed;
+  z-index: 100;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  pointer-events: none;
+  animation: hitmarker 320ms ease-out forwards;
+}
+@keyframes hitmarker {
+  from {
+    scale: 0.6;
+    opacity: 1;
+  }
+  to {
+    scale: 1.25;
+    opacity: 0;
+  }
+}
+
+/* Toast de conquista */
+.toast {
+  animation: toast-in 420ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+.toast[data-leaving] {
+  animation: toast-out 300ms ease-in forwards;
+}
+@keyframes toast-in {
+  from {
+    translate: 0 120%;
+    opacity: 0;
+  }
+}
+@keyframes toast-out {
+  to {
+    translate: -120% 0;
+    opacity: 0;
+  }
+}
+
+/* Popover de conquistas (Popover API) */
+.achievements-popover {
+  inset: auto;
+  top: 4.5rem;
+  right: 1rem;
+  margin: 0;
+  opacity: 0;
+  translate: 0 -0.5rem;
+  transition:
+    opacity 200ms ease,
+    translate 240ms ease,
+    overlay 240ms allow-discrete,
+    display 240ms allow-discrete;
+}
+.achievements-popover:popover-open {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  .achievements-popover:popover-open {
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+}
+
+/* Confete de sprites (easter egg) */
+.confetti {
+  position: fixed;
+  top: -48px;
+  z-index: 90;
+  pointer-events: none;
+  animation: confetti-fall var(--fall, 2.4s) cubic-bezier(0.3, 0.1, 0.6, 1) forwards;
+}
+@keyframes confetti-fall {
+  to {
+    translate: var(--drift, 0px) 110vh;
+    rotate: var(--spin, 540deg);
+  }
+}
+.shake {
+  animation: shake 500ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+@keyframes shake {
+  10%,
+  90% {
+    translate: -2px 0;
+  }
+  20%,
+  80% {
+    translate: 4px 0;
+  }
+  30%,
+  50%,
+  70% {
+    translate: -8px 2px;
+  }
+  40%,
+  60% {
+    translate: 8px -2px;
+  }
+}
+
+/* Movimento reduzido: sem animações decorativas */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .glitch,
+  .sticker-inner,
+  .bob,
+  .tv-noise,
+  .flicker {
+    animation: none !important;
+  }
+}

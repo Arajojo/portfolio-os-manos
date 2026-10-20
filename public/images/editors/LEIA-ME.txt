@@ -1,0 +1,9 @@
+Fotos de perfil dos editores de Os Manos.
+
+Coloque aqui:
+  pato.jpg       -> PatoJoga_ofc
+  trollchu.jpg  -> Trollchu
+
+Formato recomendado: retrato 4:5 (ex.: 800x1000 px), JPG ou WebP.
+Para usar outro nome ou uma URL, altere o campo `photo` em src/data/editors.ts.
+Sem foto, o site mostra um avatar com a inicial do nome.

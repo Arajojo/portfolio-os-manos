@@ -1,0 +1,300 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource/silkscreen/latin-700.css';
+@import '@fontsource/silkscreen/latin-ext-700.css';
+@import './art.css';
+
+@theme static {
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-pixel: 'Silkscreen', ui-monospace, monospace;
+
+  --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-surface-2: #1c1c1c;
+  --color-fg: #f2f2f2;
+  --color-muted: #b3b3b3;
+  --color-subtle: #8c8c8c;
+  --color-line: #262626;
+  --color-line-strong: #3d3d3d;
+  --color-accent: var(--accent);
+  --color-ink: #0a0a0a;
+
+  /* Cores pop: adesivos, sprites e jogos */
+  --color-pop-pink: #ff5ccb;
+  --color-pop-cyan: #4fe3ff;
+  --color-pop-red: #ff4d4d;
+  --color-pop-yellow: #ffd23f;
+  --color-pop-orange: #ff8a3d;
+  --color-pop-purple: #9b6bff;
+
+  --animate-playhead: playhead 14s linear infinite;
+  --animate-blink: blink 1.4s steps(1) infinite;
+
+  @keyframes playhead {
+    from { left: 0%; }
+    to { left: 100%; }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+}
+
+:root {
+  /* Sobrescrito em main.tsx com site.accentColor */
+  --accent: #cbef4a;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    scroll-padding-top: 5rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Reserva o espaço da barra de rolagem: travar a rolagem não desloca o layout */
+    scrollbar-gutter: stable;
+  }
+
+  /* Trava a rolagem com CSS puro enquanto o modal ou o menu mobile estão abertos */
+  html:has(dialog[open]),
+  html:has(#menu-mobile:not([hidden])) {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    /* A barra de progresso acompanha a rolagem; não é movimento automático */
+    .scroll-progress {
+      animation-duration: auto !important;
+    }
+  }
+}
+
+/* Larguras da Archivo (eixo wdth) */
+@utility font-wide {
+  font-stretch: 125%;
+}
+@utility font-semi-wide {
+  font-stretch: 112%;
+}
+@utility font-narrow {
+  font-stretch: 75%;
+}
+
+/* Metadados em mono, caixa alta */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 96rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/* Revelação ao rolar: só anima para quem não pediu movimento reduzido */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal][data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Marcas de corte nos cantos dos frames */
+.crop-marks {
+  background:
+    linear-gradient(var(--color-fg), var(--color-fg)) top left / 10px 1px no-repeat,
+    linear-gradient(var(--color-fg), var(--color-fg)) top left / 1px 10px no-repeat,
+    linear-gradient(var(--color-fg), var(--color-fg)) top right / 10px 1px no-repeat,
+    linear-gradient(var(--color-fg), var(--color-fg)) top right / 1px 10px no-repeat,
+    linear-gradient(var(--color-fg), var(--color-fg)) bottom left / 10px 1px no-repeat,
+    linear-gradient(var(--color-fg), var(--color-fg)) bottom left / 1px 10px no-repeat,
+    linear-gradient(var(--color-fg), var(--color-fg)) bottom right / 10px 1px no-repeat,
+    linear-gradient(var(--color-fg), var(--color-fg)) bottom right / 1px 10px no-repeat;
+}
+
+/* Textura de placeholder (sem imagem) */
+.hatch {
+  background-color: var(--color-surface);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 10px,
+    rgb(255 255 255 / 0.025) 10px 11px
+  );
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+  padding: 0.875rem 1.25rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  transition: background-color 200ms ease, color 200ms ease;
+  &:hover {
+    background-color: var(--color-fg);
+  }
+}
+
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-fg);
+  padding: calc(0.875rem - 1px) calc(1.25rem - 1px);
+  font-weight: 600;
+  line-height: 1.25rem;
+  transition: border-color 200ms ease, color 200ms ease;
+  &:hover {
+    border-color: var(--color-fg);
+  }
+}
+
+/* ───────────── Recursos modernos (com fallback) ───────────── */
+
+/* Modal: entrada e saída animadas com @starting-style; o fundo escurece junto */
+.modal {
+  opacity: 0;
+  translate: 0 1.5rem;
+  transition:
+    opacity 280ms ease,
+    translate 380ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    overlay 380ms allow-discrete,
+    display 380ms allow-discrete;
+}
+.modal[open] {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  .modal[open] {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+.modal::backdrop {
+  background-color: rgb(0 0 0 / 0);
+  transition:
+    background-color 280ms ease,
+    overlay 380ms allow-discrete,
+    display 380ms allow-discrete;
+}
+.modal[open]::backdrop {
+  background-color: rgb(0 0 0 / 0.85);
+}
+@starting-style {
+  .modal[open]::backdrop {
+    background-color: rgb(0 0 0 / 0);
+  }
+}
+
+/* View Transitions: os cards deslizam para a nova posição ao filtrar */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-group(*) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Barra de progresso da rolagem (playhead do header), só com scroll-driven animations */
+.scroll-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    transform-origin: left;
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes scroll-progress {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Wordmark do hero se afasta suavemente conforme a página rola */
+  @supports (animation-timeline: view()) {
+    .hero-parallax {
+      animation: hero-drift linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+@keyframes hero-drift {
+  to {
+    translate: 0 -15%;
+    opacity: 0.2;
+  }
+}
+
+/* Imagens aparecem com fade quando terminam de carregar, sem "pipocar" */
+img[data-fade] {
+  transition: opacity 500ms ease;
+}
+img[data-fade]:not([data-loaded]) {
+  opacity: 0;
+}
