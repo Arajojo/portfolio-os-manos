@@ -1,7 +1,7 @@
 import { editors } from '../data/editors'
 import { quest } from '../data/memes'
 import { site } from '../data/site'
-import { getEmailLink, getInstagramLink, getOtherLinks, getWhatsAppLink, type ContactLink } from '../lib/contact'
+import { getEmailLink, getInstagramDmLink, getInstagramLink, getOtherLinks, getWhatsAppLink, type ContactLink } from '../lib/contact'
 import { PixelSprite } from './art/PixelSprite'
 import { PendingNote } from './PendingNote'
 import { Reveal } from './Reveal'
@@ -13,7 +13,8 @@ export function Contact() {
   const email = getEmailLink(contact.email, contact.emailSubject)
   const instagram = getInstagramLink(contact.instagram)
   const links = [whatsapp, email, instagram, ...getOtherLinks(contact.others)].filter((link): link is ContactLink => Boolean(link))
-  const quoteLink = whatsapp ?? email
+  // "Solicitar orçamento" abre a DM do Instagram; sem Instagram, usa WhatsApp ou e-mail.
+  const quoteLink = getInstagramDmLink(contact.instagram) ?? whatsapp ?? email
 
   const missing = [!whatsapp && 'whatsapp', !email && 'email', !instagram && 'instagram'].filter(Boolean)
 

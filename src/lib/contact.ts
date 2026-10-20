@@ -46,6 +46,13 @@ export function getInstagramLink(input: string): ContactLink | null {
   return { id: 'instagram', label: 'Instagram', value: `@${user}`, href: `https://www.instagram.com/${user}/`, external: true }
 }
 
+/** Link que abre direto a conversa (DM) no Instagram. */
+export function getInstagramDmLink(input: string): ContactLink | null {
+  const profile = getInstagramLink(input)
+  if (!profile) return null
+  return { ...profile, id: 'instagram-dm', href: `https://ig.me/m/${profile.value.slice(1)}` }
+}
+
 export function getOtherLinks(items: readonly LinkItem[]): ContactLink[] {
   return items
     .filter((item) => item.label.trim() && isSafeUrl(item.url))

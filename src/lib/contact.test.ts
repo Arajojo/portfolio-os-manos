@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getEmailLink, getInstagramLink, getOtherLinks, getWhatsAppLink } from './contact'
+import { getEmailLink, getInstagramDmLink, getInstagramLink, getOtherLinks, getWhatsAppLink } from './contact'
 
 describe('contatos', () => {
   it('ignora campos vazios ou inválidos', () => {
@@ -17,5 +17,6 @@ describe('contatos', () => {
     expect(getEmailLink('a@b.com', 'Orçamento')?.href).toBe('mailto:a@b.com?subject=Or%C3%A7amento')
     expect(getInstagramLink('@os.manos')?.href).toBe('https://www.instagram.com/os.manos/')
     expect(getInstagramLink('https://instagram.com/os.manos?igsh=1')?.value).toBe('@os.manos')
+    expect(getInstagramDmLink('@os.manos')?.href).toBe('https://ig.me/m/os.manos')
   })
 })
