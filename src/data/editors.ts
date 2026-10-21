@@ -33,8 +33,8 @@ export const editors = [
     channelUrl: 'https://www.youtube.com/@Trollchu',
     tagline: '',
     bio: '',
-    specialties: [],
-    games: [],
+    specialties: ['gameplay', 'edicao-dinamica', 'humor', 'storytelling', 'shorts'],
+    games: ['minecraft', 'roblox', 'valorant', 'terror', 'outros'],
     socials: [],
   },
 ] as const satisfies readonly Editor[]

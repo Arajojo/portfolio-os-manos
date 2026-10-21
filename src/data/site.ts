@@ -79,16 +79,23 @@ export const site: SiteConfig = {
    */
   about: {
     intro:
-      'Os Manos é um estúdio independente de edição de vídeos para YouTube Gaming e canais dark, formado por dois editores: PatoJoga_ofc e Trollchu.',
+      'Os manos é um estúdio independente de edição de vídeos e design para YouTube de games e canais dark, mas que não edita e cria somente com ferramentas e técnicas e sim com o coração.',
     /** Como a dupla começou. */
-    history: '',
+    history: '"Os manos" nasceu de uma amizade construída ainda no ensino médio, unida por paixões em comum como animes, games, edição de vídeo e a criatividade em suas mais diversas formas. Desde aquela época, sempre que tínhamos a chance, transformávamos simples apresentações em vídeos que transmitiam emoção, dedicação e, principalmente, alegria. Foi compartilhando essas experiências, risadas e momentos especiais que descobrimos o quanto criar conteúdos nos fazia felizes. Hoje, decidimos transformar esse sonho em realidade e levar esse mesmo sentimento para cada projeto que realizamos, acreditando que um vídeo tem o poder de conectar pessoas, despertar emoções e tornar a vida um pouco mais leve, com mais sorrisos, boas lembranças e paz no coração.',
     /** O que vocês buscam em cada edição. */
-    vision: '',
+    vision: 'Nossa visão é colorir o mundo com criatividade, transformando histórias, marcas e momentos em conteúdos que fazem as pessoas sentir, sorrir e se conectar. Sonhamos em ser referência não apenas pela qualidade do que criamos, mas pela emoção que deixamos em cada frame, cada design e cada detalhe.',
     /** Etapas do processo de edição, uma por item. Ex.: ['Briefing', 'Decupagem', ...] */
-    process: [],
+    process: ['Briefing', 'Planejamento criativo', 'Decupagem', 'Edição base', 'Design e motion', 'Tratamento de audio e efeitos sonoros', 'Revisão e risadas', 'Entrega e aprovação'],
     /** Com que tipo de criador vocês querem trabalhar. */
-    idealCreator: '',
+    idealCreator:
+      'Acreditamos que um vídeo vai muito além de cortes, efeitos e transições. Cada projeto é uma oportunidade de compartilhar momentos, histórias, risadas e emoções com outras pessoas. Como um estúdio em crescimento, estamos sempre aprendendo, evoluindo e buscando novas formas de entregar o melhor resultado possível, mantendo preços acessíveis e negociações flexíveis para nossos clientes. Mas o que realmente nos diferencia é a forma como enxergamos cada trabalho: não como um simples serviço, mas como uma parceria. Queremos comemorar suas conquistas, ouvir suas ideias e ajudar a transformar seu conteúdo em algo que faça alguém sorrir do outro lado da tela. Afinal, as melhores lembranças costumam vir acompanhadas de boas risadas, e é esse sentimento que colocamos em cada projeto que passa pelas mãos dos Manos.',
     /** Diferenciais do estúdio, um por item. */
-    differentials: [],
+    differentials: [
+      'Cada trabalho é uma parceria, não um simples serviço',
+      'Preços acessíveis e negociações flexíveis',
+      'A gente ouve suas ideias e comemora suas conquistas com você',
+      'Edição que vai além de cortes e efeitos: momentos, histórias e risadas',
+      'Um estúdio em crescimento, sempre aprendendo e evoluindo',
+    ],
   },
 }

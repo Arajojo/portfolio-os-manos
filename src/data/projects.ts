@@ -49,7 +49,7 @@ export const projects: Project[] = [
     editorId: 'pato',
     published: true,
     aspectRatio: '16:9',
-    order: 3,
+    order: 4,
     },
     {
     id: 'badparenting',
@@ -64,9 +64,9 @@ export const projects: Project[] = [
     editorId: 'pato',
     published: true,
     aspectRatio: '16:9',
-    order: 2,
+    order: 3,
     },
-       {
+    {
     id: 'quartetofantastico',
     slug: 'quartetofantastico',
     title: 'O MELHOR QUARTETO DO VALORANT | O QUARTETO FANTASTICO',
@@ -80,5 +80,20 @@ export const projects: Project[] = [
     published: true,
     aspectRatio: '16:9',
     order: 1,
+    },
+    {
+    id: 'robloxDoors',
+    slug: 'robloxDoors',
+    title: 'medrosos NÃO podem jogar esse jogo do Roblox',
+    description:'Edição simples e engraçada de Roblox',
+    youtubeUrl: 'https://youtu.be/WOgbnYveJJQ',
+    thumbnail: '',
+    game: 'roblox',
+    category: 'Vídeo longo',
+    editingStyle: 'gameplay',
+    editorId: 'trollchu',
+    published: true,
+    aspectRatio: '16:9',
+    order: 2,
     },
 ]

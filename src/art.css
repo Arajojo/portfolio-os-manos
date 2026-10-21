@@ -365,3 +365,46 @@
     animation: none !important;
   }
 }
+
+/* Seção "Sobre o estúdio": coração batendo e monitor cardíaco */
+.heartbeat {
+  transform-origin: center;
+  animation: heartbeat 1.2s ease-in-out infinite;
+}
+@keyframes heartbeat {
+  0%,
+  45%,
+  100% {
+    scale: 1;
+  }
+  14% {
+    scale: 1.2;
+  }
+  24% {
+    scale: 0.96;
+  }
+  33% {
+    scale: 1.1;
+  }
+}
+.ecg-line {
+  stroke-dasharray: 260 940;
+  animation: ecg 2.4s linear infinite;
+}
+@keyframes ecg {
+  from {
+    stroke-dashoffset: 1200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heartbeat {
+    animation: none !important;
+  }
+  .ecg-line {
+    animation: none !important;
+    stroke-dasharray: none;
+  }
+}
