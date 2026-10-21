@@ -37,19 +37,19 @@ import type { Project } from '../types'
  */
 export const projects: Project[] = [
     {
-    id: 'pato-tiltou-geral',
-    slug: 'pato-tiltou-geral',
-    title: 'Pato Tiltou GERAL na Sem Class (Ficaram Malucos)',
+    id: 'comoimitarpato',
+    slug: 'comoimitarpato',
+    title: 'Quando vou ensinar a imitar o Pato?',
     description:'Uma edição antiga e simples que gostei bastante na época que eu postei',
-    youtubeUrl: 'https://youtu.be/Co_i-RyYyAA?si=UTdWDb--_EuGHJT2',
+    youtubeUrl: 'https://youtube.com/shorts/DMtg23rPTX8',
     thumbnail: '',
-    game: 'valorant',
-    category: 'Vídeo longo',
-    editingStyle: 'gameplay',
+    game: 'outros',
+    category: 'Vídeo curto',
+    editingStyle: 'shorts',
     editorId: 'pato',
     published: true,
-    aspectRatio: '16:9',
-    order: 4,
+    aspectRatio: '9:16',
+    order: 3,
     },
     {
     id: 'badparenting',
@@ -64,7 +64,7 @@ export const projects: Project[] = [
     editorId: 'pato',
     published: true,
     aspectRatio: '16:9',
-    order: 3,
+    order: 4,
     },
     {
     id: 'quartetofantastico',
