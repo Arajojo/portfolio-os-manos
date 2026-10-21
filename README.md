@@ -27,6 +27,7 @@ Em `npm run dev`, os campos ainda não preenchidos aparecem com o aviso **"Pende
 | `src/data/site.ts` | Nome, descrição, headline, cor de destaque, contatos, redes sociais e textos das seções (incluindo o Sobre) |
 | `src/data/projects.ts` | Vídeos do portfólio |
 | `src/data/editors.ts` | Os dois editores: nome, arroba, foto, canal, bio, especialidades e jogos |
+| `src/data/design.ts` | Equipe de design (seção "O Design"): nome, arroba, foto, Instagram, bio e especialidades |
 | `src/data/niches.ts` | Nichos de canal: YouTube Gaming e Canais dark (destaque na seção "O que editamos" e filtro da galeria) |
 | `src/data/games.ts` | Jogos e seus cartuchos: cor (`color`), pixel art (`sprite`) e imagem opcional (`image`) |
 | `src/data/services.ts` | Especialidades / estilos de edição, com pixel art e legenda de meme (`meme`) |

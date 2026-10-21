@@ -64,6 +64,10 @@ export const site: SiteConfig = {
       title: 'A dupla',
       intro: 'Hora de conhecer Os manos! Veja que seu vídeo estará em boas mãos.',
     },
+    design: {
+      title: 'O Design',
+      intro: 'Quem cuida das thumbnails e da parte visual dos vídeos de Os Manos.',
+    },
     about: {
       title: 'Sobre o estúdio',
     },

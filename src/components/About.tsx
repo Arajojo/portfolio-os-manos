@@ -45,7 +45,7 @@ export function About() {
 
   return (
     <section id="sobre" aria-labelledby="sobre-titulo" className="container-page py-20 lg:py-32">
-      <SectionHeading id="sobre-titulo" index="04" label="Sobre" sprite="heart" title={site.sections.about.title} />
+      <SectionHeading id="sobre-titulo" index="05" label="Sobre" sprite="heart" title={site.sections.about.title} />
 
       <Reveal className="mt-14 lg:mt-20 lg:grid lg:grid-cols-12">
         <p className="text-[clamp(1.5rem,3.2vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em] text-balance lg:col-span-8 lg:col-start-4">

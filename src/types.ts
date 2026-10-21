@@ -60,6 +60,27 @@ export interface Editor {
   socials?: readonly LinkItem[]
 }
 
+/** Integrante da equipe que não é editor (ex.: designer). */
+export interface TeamMember {
+  id: string
+  displayName: string
+  /** Arroba exatamente como no perfil, com "@". */
+  handle: string
+  /** Caminho em public/ (ex.: "images/team/leo.jpg") ou URL. */
+  photo?: string
+  /** Texto à direita no topo do card (ex.: "Designer"). */
+  role: string
+  /** Cor do card (qualquer cor CSS). Sem ela, segue a cor do próximo player. */
+  color?: string
+  /** Botão principal do card (ex.: Instagram). */
+  profile: LinkItem
+  tagline?: string
+  bio?: string
+  /** Especialidades em texto livre. */
+  specialties?: readonly string[]
+  socials?: readonly LinkItem[]
+}
+
 export interface Game {
   id: string
   name: string
@@ -118,6 +139,7 @@ export interface SiteConfig {
     portfolio: { title: string; intro: string }
     specialties: { title: string; intro: string }
     editors: { title: string; intro: string }
+    design: { title: string; intro: string }
     about: { title: string }
   }
   about: {

@@ -49,7 +49,7 @@ export const projects: Project[] = [
     editorId: 'pato',
     published: true,
     aspectRatio: '16:9',
-    order: 1,
+    order: 3,
     },
     {
     id: 'badparenting',
@@ -65,5 +65,20 @@ export const projects: Project[] = [
     published: true,
     aspectRatio: '16:9',
     order: 2,
-    }
+    },
+       {
+    id: 'quartetofantastico',
+    slug: 'quartetofantastico',
+    title: 'O MELHOR QUARTETO DO VALORANT | O QUARTETO FANTASTICO',
+    description:'Essa é a edição de Valorant mais recente que eu tenho, ficou muito legal',
+    youtubeUrl: 'https://www.youtube.com/watch?v=9JrQy7IJyyc',
+    thumbnail: '',
+    game: 'valorant',
+    category: 'Vídeo longo',
+    editingStyle: 'gameplay',
+    editorId: 'pato',
+    published: true,
+    aspectRatio: '16:9',
+    order: 1,
+    },
 ]

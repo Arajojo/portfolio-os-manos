@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { About } from './components/About'
 import { TapeDivider } from './components/art/Tape'
 import { Contact } from './components/Contact'
+import { Design } from './components/Design'
 import { Editors } from './components/Editors'
 import { Footer } from './components/Footer'
 import { AchievementsProvider } from './components/fx/Achievements'
@@ -114,6 +115,7 @@ function Site({ projects }: { projects: Project[] }) {
         />
         <TapeDivider variant="alt" />
         <Editors projects={projects} onShowWork={(editorId) => showInPortfolio({ editorId })} />
+        <Design />
         <About />
         <TapeDivider />
         <Contact />

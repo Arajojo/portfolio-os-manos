@@ -7,7 +7,7 @@ import type { Editor } from '../types'
 const failedPhotos = new Set<string>()
 
 interface AvatarProps {
-  editor: Editor
+  editor: Pick<Editor, 'photo' | 'displayName'>
   alt: string
   className?: string
   /** Classes do avatar substituto (inicial do nome). */

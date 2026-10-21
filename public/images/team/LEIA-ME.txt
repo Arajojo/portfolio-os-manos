@@ -1,0 +1,8 @@
+Fotos da equipe de design de Os Manos.
+
+Coloque aqui:
+  leo.jpg  -> tx_leo_tx
+
+Formato recomendado: retrato 4:5 (ex.: 800x1000 px), JPG ou WebP.
+Para usar outro nome ou uma URL, altere o campo `photo` em src/data/design.ts.
+Sem foto, o site mostra um avatar com a inicial do nome.

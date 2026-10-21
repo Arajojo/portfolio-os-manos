@@ -22,7 +22,7 @@ export function Contact() {
     <section id="contato" aria-labelledby="contato-titulo" className="relative overflow-hidden border-t border-line bg-surface">
       <div aria-hidden="true" className="dot-grid pointer-events-none absolute inset-0 opacity-60" />
       <div className="container-page relative py-20 lg:py-28">
-        <SectionHeading id="contato-titulo" index="05" label="Contato" sprite="sword" title={contact.title} />
+        <SectionHeading id="contato-titulo" index="06" label="Contato" sprite="sword" title={contact.title} />
 
         <div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-12 lg:gap-6">
           <Reveal className="lg:col-span-5 lg:col-start-4">
