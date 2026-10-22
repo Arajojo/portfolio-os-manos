@@ -28,7 +28,7 @@ export const services = [
   },
   {
     id: 'canais-dark',
-    sprite: 'mic',
+    sprite: 'ghost',
     meme: '[voz grave] tudo começou...',
     name: 'Edição para canais dark',
     description: 'Narração sincronizada com banco de imagens, legendas, trilha e efeitos para vídeos sem rosto.',
@@ -91,7 +91,7 @@ export const services = [
   },
   {
     id: 'vlogs',
-    sprite: 'heart',
+    sprite: 'camera',
     meme: 'bom dia, família!',
     name: 'Vlogs e lifestyle',
     description: 'Rotina, viagens e bastidores com cortes leves, música e cor que deixam o dia a dia gostoso de assistir.',
@@ -118,7 +118,7 @@ export const services = [
   },
   {
     id: 'tutoriais',
-    sprite: 'bolt',
+    sprite: 'bulb',
     meme: 'agora ficou fácil',
     name: 'Tutoriais e educativos',
     description: 'Explicações claras com textos na tela, destaques visuais e cortes que mantêm a aula objetiva.',
@@ -127,7 +127,7 @@ export const services = [
   },
   {
     id: 'reviews',
-    sprite: 'star',
+    sprite: 'box',
     meme: 'vale a pena?',
     name: 'Reviews e unboxings',
     description: 'Produto em evidência, detalhes em close e um ritmo que guia quem assiste até o veredito.',

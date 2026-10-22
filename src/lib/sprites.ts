@@ -102,6 +102,18 @@ export const SPRITES = {
   note: ['...aaaa', '...aaaa', '...a..a', '...a..a', '...a..a', '.aaa.aa', 'aaaa.aa', '.aa....'],
   sparkle: ['...p...', '...p...', '..ppp..', 'ppppppp', '..ppp..', '...p...', '...p...'],
   play: ['a......', 'aaa....', 'aaaaa..', 'aaaaaaa', 'aaaaa..', 'aaa....', 'a......'],
+  camera: [
+    '..ggg.......',
+    'gggggggggggg',
+    'gggwwwwggrrg',
+    'ggwwccwwgggg',
+    'ggwcckwwgggg',
+    'ggwwccwwgggg',
+    'gggwwwwggggg',
+    'gggggggggggg',
+  ],
+  bulb: ['..yyyyy..', '.yyyyyyy.', 'yyywyyyyy', 'yywyyyyyy', 'yyyyyyyyy', '.yyyyyyy.', '..yyyyy..', '...ggg...', '..ggggg..', '...ggg...', '....g....'],
+  box: ['BBBByyBBBB', 'bbbbyybbbb', 'bbbbyybbbb', 'bbbbbbbbbb', 'bwwwbbbbbb', 'bwwwbbbbbb', 'bbbbbbbbbb', 'BBBBBBBBBB'],
 } satisfies Record<string, string[]>
 
 export type SpriteName = keyof typeof SPRITES
