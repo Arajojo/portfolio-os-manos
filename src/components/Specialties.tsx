@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { games } from '../data/games'
 import { darkCaptions } from '../data/memes'
 import { niches } from '../data/niches'
@@ -7,6 +7,7 @@ import { site } from '../data/site'
 import { useTilt } from '../hooks/useTilt'
 import { resolveAsset } from '../lib/assets'
 import { cx, pad, plural } from '../lib/cx'
+import type { SpriteName } from '../lib/sprites'
 import type { Game, Niche, Project, Service } from '../types'
 import { PixelSprite } from './art/PixelSprite'
 import { Reveal } from './Reveal'
@@ -115,19 +116,29 @@ interface NichePanelProps {
 
 function NichePanel({ niche, index, count, onFilter }: NichePanelProps) {
   const dark = niche.id === 'dark'
+  // Vlogs e outros nichos: visual de vídeo de criador (visor de câmera, reações e player)
+  const creators = niche.id === 'criadores'
 
   return (
     <li
       className={cx(
         '@container relative flex min-h-[27rem] flex-col justify-between gap-10 overflow-hidden border-2 p-6 sm:p-8 lg:p-10 md:last:odd:col-span-2',
-        dark ? 'border-pop-red/50 bg-ink' : 'border-accent/50 bg-bg',
+        dark ? 'border-pop-red/50 bg-ink' : creators ? 'border-pop-pink/50 bg-bg' : 'border-accent/50 bg-bg',
       )}
     >
-      {dark ? <DarkBackdrop /> : <GamingBackdrop />}
+      {dark ? <DarkBackdrop /> : creators ? <CreatorBackdrop /> : <GamingBackdrop />}
 
       <div className="relative flex items-start justify-between gap-4">
-        <span className={cx('label-mono', dark ? 'text-pop-red' : 'text-accent')}>Nicho {pad(index + 1)}</span>
-        {dark ? <span className="font-pixel text-[12px] text-pop-red">● Rec</span> : <GamingHud />}
+        <span className={cx('label-mono', dark ? 'text-pop-red' : creators ? 'text-pop-pink' : 'text-accent')}>Nicho {pad(index + 1)}</span>
+        {dark ? (
+          <span className="font-pixel text-[12px] text-pop-red">● Rec</span>
+        ) : creators ? (
+          <span aria-hidden="true" className="bg-pop-pink px-3 py-1.5 font-pixel text-[12px] text-ink">
+            Inscrever-se
+          </span>
+        ) : (
+          <GamingHud />
+        )}
       </div>
 
       <Reveal className="relative">
@@ -143,13 +154,17 @@ function NichePanel({ niche, index, count, onFilter }: NichePanelProps) {
         {niche.formats.length > 0 && (
           <ul className="mt-6 flex flex-wrap gap-2" aria-label={`Formatos de ${niche.name}`}>
             {niche.formats.map((format) => (
-              <li key={format} className={cx('border px-2.5 py-1 text-sm', dark ? 'border-pop-red/40 text-muted' : 'border-line-strong text-muted')}>
+              <li
+                key={format}
+                className={cx('border px-2.5 py-1 text-sm', dark ? 'border-pop-red/40 text-muted' : creators ? 'border-pop-pink/40 text-muted' : 'border-line-strong text-muted')}
+              >
                 {format}
               </li>
             ))}
           </ul>
         )}
         {dark && <DarkCaption />}
+        {creators && <CreatorPlayerBar />}
         {count > 0 && (
           <button type="button" onClick={onFilter} className="label-mono mt-8 whitespace-nowrap text-fg transition-colors hover:text-accent">
             Ver {plural(count, 'trabalho', 'trabalhos')} <span aria-hidden="true">→</span>
@@ -157,6 +172,47 @@ function NichePanel({ niche, index, count, onFilter }: NichePanelProps) {
         )}
       </Reveal>
     </li>
+  )
+}
+
+/** Visor de câmera com grade de terços, cantos de enquadramento e reações subindo como numa live. */
+function CreatorBackdrop() {
+  const reactions: { sprite: SpriteName; left: string; delay: string; drift: string }[] = [
+    { sprite: 'heart', left: '84%', delay: '0s', drift: '-14px' },
+    { sprite: 'star', left: '90%', delay: '-1.1s', drift: '12px' },
+    { sprite: 'heart', left: '78%', delay: '-2.2s', drift: '18px' },
+    { sprite: 'sparkle', left: '88%', delay: '-3s', drift: '-10px' },
+    { sprite: 'heart', left: '93%', delay: '-3.7s', drift: '-6px' },
+  ]
+
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(to_right,var(--color-fg)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-fg)_1px,transparent_1px)] [background-size:33.333%_33.333%]" />
+      {['left-4 top-4 border-l-2 border-t-2', 'right-4 top-4 border-r-2 border-t-2', 'bottom-4 left-4 border-b-2 border-l-2', 'bottom-4 right-4 border-b-2 border-r-2'].map((corner) => (
+        <span key={corner} className={cx('absolute size-7 border-pop-pink/70', corner)} />
+      ))}
+      {reactions.map((reaction, index) => (
+        <span key={index} className="reaction" style={{ left: reaction.left, animationDelay: reaction.delay, '--drift': reaction.drift } as CSSProperties}>
+          <PixelSprite name={reaction.sprite} className="size-6" />
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/** Barra de player de vídeo (decorativa). */
+function CreatorPlayerBar() {
+  return (
+    <div aria-hidden="true" className="mt-6 max-w-md">
+      <div className="relative h-1.5 bg-line-strong">
+        <div className="absolute inset-y-0 left-0 w-[64%] bg-fg/20" />
+        <div className="creator-progress absolute inset-y-0 left-0 bg-pop-pink" />
+      </div>
+      <div className="mt-2 flex items-center justify-between font-mono text-xs text-subtle">
+        <span>▶ 04:20 / 11:08</span>
+        <span>CC · HD</span>
+      </div>
+    </div>
   )
 }
 

@@ -408,3 +408,59 @@
     stroke-dasharray: none;
   }
 }
+
+/* Nicho "Vlogs e outros nichos": reações subindo como numa live e barra do player */
+.reaction {
+  position: absolute;
+  bottom: 14%;
+  opacity: 0;
+  animation: reaction-float 4.4s ease-in infinite;
+}
+@keyframes reaction-float {
+  0% {
+    translate: 0 0;
+    scale: 0.6;
+    opacity: 0;
+  }
+  12% {
+    scale: 1;
+    opacity: 0.9;
+  }
+  100% {
+    translate: var(--drift, 0px) -240px;
+    scale: 0.85;
+    opacity: 0;
+  }
+}
+.creator-progress {
+  width: 38%;
+  animation: creator-progress 14s linear infinite;
+}
+.creator-progress::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 9999px;
+  background: var(--color-pop-pink);
+}
+@keyframes creator-progress {
+  from {
+    width: 6%;
+  }
+  to {
+    width: 62%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reaction {
+    animation: none !important;
+    opacity: 0.45;
+  }
+  .creator-progress {
+    animation: none !important;
+  }
+}
