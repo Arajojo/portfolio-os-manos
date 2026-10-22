@@ -28,7 +28,7 @@ Em `npm run dev`, os campos ainda não preenchidos aparecem com o aviso **"Pende
 | `src/data/projects.ts` | Vídeos do portfólio |
 | `src/data/editors.ts` | Os dois editores: nome, arroba, foto, canal, bio, especialidades e jogos |
 | `src/data/design.ts` | Equipe de design (seção "O Design"): nome, arroba, foto, Instagram, bio e especialidades |
-| `src/data/niches.ts` | Nichos de canal: YouTube Gaming e Canais dark (destaque na seção "O que editamos" e filtro da galeria) |
+| `src/data/niches.ts` | Nichos de canal: YouTube Gaming, Canais dark e Vlogs e outros nichos (destaque na seção "O que editamos" e filtro da galeria) |
 | `src/data/games.ts` | Jogos e seus cartuchos: cor (`color`), pixel art (`sprite`) e imagem opcional (`image`) |
 | `src/data/services.ts` | Especialidades / estilos de edição, com pixel art e legenda de meme (`meme`) |
 | `src/data/memes.ts` | Adesivos arrastáveis do topo, faixas que correm, dicas da tela de loading, legendas do canal dark, conquistas e a missão de contato |
@@ -67,7 +67,7 @@ Passo a passo:
 1. Crie um objeto novo com `id` e `slug` únicos. Use letras minúsculas, números e hífens.
 2. Preencha `title` e `youtubeUrl`. São aceitos `youtube.com/watch?v=…`, `youtu.be/…` e `youtube.com/shorts/…`. Links que não forem do YouTube não viram player.
 3. Coloque a thumbnail em `public/images/projects/` e informe o caminho em `thumbnail`. Se deixar vazio, o site usa a thumbnail do próprio YouTube. Para Shorts, prefira uma thumbnail vertical.
-4. Escolha `game` (IDs de `games.ts`) e `editingStyle` (IDs de `services.ts`). Para vídeos de **canal dark**, use `niche: 'dark'` e deixe `game` vazio. Vídeos com jogo contam automaticamente como `'gaming'`. `category` é texto livre, por exemplo `'Vídeo longo'`, `'Short'`, `'Série'` ou `'Highlights'`.
+4. Escolha `game` (IDs de `games.ts`) e `editingStyle` (IDs de `services.ts`). Para vídeos de **canal dark**, use `niche: 'dark'`; para **vlogs, podcasts, reacts e outros conteúdos fora de games**, use `niche: 'criadores'`. Nos dois casos, deixe `game` vazio. Vídeos com jogo contam automaticamente como `'gaming'`. `category` é texto livre, por exemplo `'Vídeo longo'`, `'Short'`, `'Série'` ou `'Highlights'`.
 5. Defina `editorId` como `'pato'` ou `'trollchu'`.
 6. Use `published: true` quando o vídeo puder aparecer no site. Com `false`, ele fica guardado sem aparecer.
 
@@ -140,7 +140,7 @@ Redes sociais do estúdio que devem aparecer no rodapé ficam em `socials`, no m
 - **Headline e descrição do topo:** `headline` e `heroDescription` em `site.ts`.
 - **Sobre:** `about` em `site.ts`. Preencham `history`, `vision`, `process` (lista de etapas), `idealCreator` e `differentials` (lista). O que ficar vazio não aparece.
 - **Cor de destaque:** `accentColor` em `site.ts` (qualquer cor CSS).
-- **Nichos:** em `niches.ts` dá para mudar nome, descrição e a lista de formatos (`formats`) de YouTube Gaming e Canais dark.
+- **Nichos:** em `niches.ts` dá para mudar nome, descrição e a lista de formatos (`formats`) de cada nicho (YouTube Gaming, Canais dark e Vlogs e outros nichos).
 - **Jogos e especialidades:** em `games.ts` e `services.ts`. `showOnSite: false` esconde o item da seção "O que editamos", e `order` define a ordem das especialidades.
 - **Compartilhamento:** título, descrição e imagem são gerados a partir de `site.ts`. Quando o site tiver endereço próprio, preencha `url` (ex.: `'https://osmanos.com.br'`) para que a imagem de compartilhamento use o endereço completo. Para trocar a imagem, substitua `public/og-image.png` (1200×630).
 

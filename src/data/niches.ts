@@ -7,7 +7,7 @@ import type { Niche } from '../types'
  * - `formats`: exemplos de formatos do nicho (texto livre, um por item).
  * - `showOnSite: false` esconde o nicho da seção.
  *
- * Nos projetos, use `niche: 'gaming'` ou `niche: 'dark'`.
+ * Nos projetos, use `niche: 'gaming'`, `niche: 'dark'` ou `niche: 'criadores'` (vlogs, podcasts e outros).
  * Projetos com `game` preenchido e sem `niche` contam como 'gaming'.
  */
 export const niches = [
@@ -24,6 +24,14 @@ export const niches = [
     description:
       'Edição para canais sem rosto: narração, banco de imagens, legendas, trilha e sound design para prender quem assiste do começo ao fim.',
     formats: ['Narração e storytelling', 'Curiosidades e listas', 'Terror e mistério', 'True crime', 'Documentários curtos'],
+    showOnSite: true,
+  },
+  {
+    id: 'criadores',
+    name: 'Vlogs e outros nichos',
+    description:
+      'Não é só game: editamos para todo tipo de YouTuber. Vlogs, podcasts, reacts, tutoriais e reviews com o mesmo cuidado, ritmo e personalidade.',
+    formats: ['Vlogs e lifestyle', 'Podcasts e cortes', 'Reacts e comentários', 'Tutoriais e educativos', 'Reviews e unboxings'],
     showOnSite: true,
   },
 ] as const satisfies readonly Niche[]
