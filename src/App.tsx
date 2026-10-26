@@ -12,6 +12,7 @@ import { Hero } from './components/Hero'
 import { Portfolio } from './components/Portfolio'
 import { Specialties } from './components/Specialties'
 import { useAchievements } from './hooks/useAchievements'
+import { useI18n } from './i18n/context'
 import { getPublishedProjects } from './lib/content'
 import type { Filters } from './lib/filters'
 import type { Project } from './types'
@@ -48,6 +49,7 @@ export default function App() {
 
 function Site({ projects }: { projects: Project[] }) {
   const { unlock } = useAchievements()
+  const { t } = useI18n()
   const [filters, setFilters] = useState<Filters>({})
   const [openSlug, setOpenSlug] = useState<string | null>(readProjectParam)
   const [modalRequested, setModalRequested] = useState(openSlug !== null)
@@ -94,7 +96,7 @@ function Site({ projects }: { projects: Project[] }) {
         href="#conteudo"
         className="label-mono fixed left-4 top-4 z-50 -translate-y-24 bg-accent px-4 py-3 text-ink transition-transform focus:translate-y-0"
       >
-        Pular para o conteúdo
+        {t.skipToContent}
       </a>
       <Header />
       <main id="conteudo">

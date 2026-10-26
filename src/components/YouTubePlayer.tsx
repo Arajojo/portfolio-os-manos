@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useI18n } from '../i18n/context'
 import { getEmbedUrl } from '../lib/youtube'
 import type { AspectRatio } from '../types'
 import { SmartImage } from './SmartImage'
@@ -30,6 +31,7 @@ interface YouTubePlayerProps {
  * depois do clique, então nada carrega ou toca sem uma ação do usuário.
  */
 export function YouTubePlayer({ videoId, title, posterSources, ratio }: YouTubePlayerProps) {
+  const { t } = useI18n()
   const [playing, setPlaying] = useState(false)
   const embedUrl = videoId ? getEmbedUrl(videoId) : null
   const [w, h] = ratio.split(':').map(Number)
@@ -46,7 +48,7 @@ export function YouTubePlayer({ videoId, title, posterSources, ratio }: YouTubeP
       {playing && embedUrl ? (
         <iframe
           src={embedUrl}
-          title={`Vídeo do YouTube: ${title}`}
+          title={t.player.iframeTitle(title)}
           allow="autoplay; encrypted-media; picture-in-picture; fullscreen; web-share"
           allowFullScreen
           referrerPolicy="strict-origin-when-cross-origin"
@@ -56,7 +58,7 @@ export function YouTubePlayer({ videoId, title, posterSources, ratio }: YouTubeP
         <>
           <SmartImage
             sources={posterSources}
-            alt={`Thumbnail do vídeo ${title}`}
+            alt={t.player.thumbnailAlt(title)}
             eager
             className="absolute inset-0 size-full object-cover"
             fallback={<div className="hatch absolute inset-0" />}
@@ -71,12 +73,12 @@ export function YouTubePlayer({ videoId, title, posterSources, ratio }: YouTubeP
                 <svg aria-hidden="true" viewBox="0 0 10 12" className="h-3.5 w-3" fill="currentColor">
                   <path d="M0 0l10 6-10 6z" />
                 </svg>
-                Reproduzir
-                <span className="sr-only"> o vídeo {title}</span>
+                {t.player.play}
+                <span className="sr-only">{t.player.playVideo(title)}</span>
               </span>
             </button>
           ) : (
-            <p className="label-mono absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-muted">Vídeo indisponível para reprodução</p>
+            <p className="label-mono absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-muted">{t.player.unavailable}</p>
           )}
         </>
       )}

@@ -1,15 +1,16 @@
 import { useId } from 'react'
-import { getAspectRatio, getGame, getNiche, getService, getThumbnailSources, isVertical } from '../lib/content'
+import { useI18n } from '../i18n/context'
+import { getAspectRatio, getThumbnailSources, isVertical } from '../lib/content'
 import { cx, pad } from '../lib/cx'
 import type { Project } from '../types'
 import { EditorCredit } from './EditorCredit'
 import { SmartImage } from './SmartImage'
 
 export function ThumbnailFallback({ project }: { project: Project }) {
-  const game = getGame(project.game)
+  const { t, c } = useI18n()
   return (
-    <div role="img" aria-label="Thumbnail indisponível" className="hatch absolute inset-0 flex flex-col justify-between p-4">
-      <span className="label-mono text-subtle">{game?.name ?? getNiche(project.niche)?.name ?? 'Os Manos'}</span>
+    <div role="img" aria-label={t.card.noThumbnail} className="hatch absolute inset-0 flex flex-col justify-between p-4">
+      <span className="label-mono text-subtle">{c.gameName(project.game) ?? c.nicheName(project.niche) ?? 'Os Manos'}</span>
       <span className="font-wide text-xl font-extrabold uppercase leading-none text-line-strong line-clamp-3 sm:text-2xl">{project.title}</span>
     </div>
   )
@@ -25,8 +26,9 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, index, onOpen, onIntent }: ProjectCardProps) {
   const metaId = useId()
+  const { t, c } = useI18n()
   const ratio = getAspectRatio(project)
-  const meta = [getGame(project.game)?.name ?? getNiche(project.niche)?.name, project.category, getService(project.editingStyle)?.name].filter(Boolean)
+  const meta = [c.gameName(project.game) ?? c.nicheName(project.niche), c.category(project.category), c.serviceName(project.editingStyle)].filter(Boolean)
 
   return (
     <article className="group @container flex flex-col">
@@ -36,7 +38,7 @@ export function ProjectCard({ project, index, onOpen, onIntent }: ProjectCardPro
         onPointerEnter={onIntent}
         onFocus={onIntent}
         aria-haspopup="dialog"
-        aria-label={`${project.title} — ver detalhes e assistir`}
+        aria-label={t.card.open(project.title)}
         aria-describedby={meta.length ? metaId : undefined}
         className="block w-full text-left"
       >
@@ -57,7 +59,7 @@ export function ProjectCard({ project, index, onOpen, onIntent }: ProjectCardPro
             <svg aria-hidden="true" viewBox="0 0 10 12" className="h-2.5 w-2" fill="currentColor">
               <path d="M0 0l10 6-10 6z" />
             </svg>
-            Assistir
+            {t.card.watch}
           </span>
         </div>
 

@@ -1,6 +1,5 @@
-import { designers } from '../data/design'
 import { editors } from '../data/editors'
-import { site } from '../data/site'
+import { useI18n } from '../i18n/context'
 import { cx } from '../lib/cx'
 import { PLAYER_COLORS } from '../lib/players'
 import { PlayerCard } from './PlayerCard'
@@ -8,6 +7,8 @@ import { SectionHeading } from './SectionHeading'
 
 /** Seção "O Design": mesmo card de seleção dos editores, continuando a numeração dos players. */
 export function Design() {
+  const { t, c } = useI18n()
+  const designers = c.designers
   if (designers.length === 0) return null
   const colorOf = (index: number) => designers[index]?.color ?? PLAYER_COLORS[(editors.length + index) % PLAYER_COLORS.length]!
 
@@ -16,14 +17,14 @@ export function Design() {
       <SectionHeading
         id="design-titulo"
         index="04"
-        label="Design"
+        label={t.sections.design}
         sprite="sparkle"
-        title={site.sections.design.title}
-        intro={site.sections.design.intro}
+        title={c.site.sections.design.title}
+        intro={c.site.sections.design.intro}
       />
 
       <p aria-hidden="true" className="mt-16 text-center font-pixel text-[14px] sm:text-base lg:mt-20" style={{ color: colorOf(0) }}>
-        Quem dá cara ao seu vídeo<span className="motion-safe:animate-blink">_</span>
+        {t.design.tagline}<span className="motion-safe:animate-blink">_</span>
       </p>
 
       <div className={cx('mt-10 grid gap-8', designers.length === 1 ? 'mx-auto max-w-xl' : 'lg:grid-cols-2 lg:gap-10')}>
@@ -42,7 +43,7 @@ export function Design() {
               tagline={designer.tagline}
               bio={designer.bio}
               bioHint="src/data/design.ts"
-              tagGroups={[{ term: 'Especialidades', items: [...(designer.specialties ?? [])] }]}
+              tagGroups={[{ term: t.editors.specialties, items: [...(designer.specialties ?? [])] }]}
               primaryLink={designer.profile}
               socials={designer.socials}
             />

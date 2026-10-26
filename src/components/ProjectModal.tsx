@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { getAspectRatio, getEditor, getGame, getNiche, getService, getThumbnailSources, isVertical } from '../lib/content'
+import { useI18n } from '../i18n/context'
+import { getAspectRatio, getEditor, getThumbnailSources, isVertical } from '../lib/content'
 import { cx } from '../lib/cx'
 import { getWatchUrl, parseYouTubeId } from '../lib/youtube'
 import type { Project } from '../types'
@@ -55,32 +56,36 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   )
 }
 
-function ProjectDetails({ project, active, onClose }: { project: Project; active: boolean; onClose: () => void }) {
+function ProjectDetails({ project: original, active, onClose }: { project: Project; active: boolean; onClose: () => void }) {
+  const { t, c } = useI18n()
+  // Descrição (e título, se houver tradução) no idioma escolhido
+  const project = c.project(original)
   const ratio = getAspectRatio(project)
   const vertical = isVertical(ratio)
   const videoId = parseYouTubeId(project.youtubeUrl)
   const watchUrl = videoId ? getWatchUrl(videoId) : null
-  const game = getGame(project.game)
-  const niche = getNiche(project.niche)
+  const gameName = c.gameName(project.game)
+  const nicheName = c.nicheName(project.niche)
   const meta = [
-    ['Nicho', niche?.name],
-    ['Jogo', game?.name],
-    ['Categoria', project.category],
-    ['Estilo de edição', getService(project.editingStyle)?.name],
+    [t.modal.niche, nicheName],
+    [t.modal.game, gameName],
+    [t.modal.category, c.category(project.category)],
+    [t.modal.style, c.serviceName(project.editingStyle)],
   ].filter((entry): entry is [string, string] => Boolean(entry[1]))
 
   return (
     <div>
       <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-line bg-surface px-4 py-3 sm:px-6">
         <p className="label-mono truncate text-subtle">
-          Projeto{game || niche ? ` · ${(game ?? niche)!.name}` : ''}
+          {t.modal.project}
+          {gameName || nicheName ? ` · ${gameName ?? nicheName}` : ''}
         </p>
         <button
           type="button"
           onClick={onClose}
           className="label-mono flex shrink-0 items-center gap-2 border border-line-strong px-3 py-2 text-fg transition-colors hover:border-fg"
         >
-          Fechar <span aria-hidden="true">✕</span>
+          {t.modal.close} <span aria-hidden="true">✕</span>
         </button>
       </div>
 
@@ -114,8 +119,8 @@ function ProjectDetails({ project, active, onClose }: { project: Project; active
             )}
             {watchUrl && (
               <a href={watchUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary self-start">
-                Abrir no YouTube <span aria-hidden="true">↗</span>
-                <span className="sr-only"> (nova aba)</span>
+                {t.modal.openYouTube} <span aria-hidden="true">↗</span>
+                <span className="sr-only">{t.modal.newTab}</span>
               </a>
             )}
           </div>

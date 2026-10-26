@@ -1,12 +1,8 @@
 import { useEffect, useState, type CSSProperties } from 'react'
-import { games } from '../data/games'
-import { darkCaptions } from '../data/memes'
-import { niches } from '../data/niches'
-import { services } from '../data/services'
-import { site } from '../data/site'
 import { useTilt } from '../hooks/useTilt'
+import { useI18n } from '../i18n/context'
 import { resolveAsset } from '../lib/assets'
-import { cx, pad, plural } from '../lib/cx'
+import { cx, pad } from '../lib/cx'
 import type { SpriteName } from '../lib/sprites'
 import type { Game, Niche, Project, Service } from '../types'
 import { PixelSprite } from './art/PixelSprite'
@@ -21,9 +17,10 @@ interface SpecialtiesProps {
 }
 
 export function Specialties({ projects, onFilterGame, onFilterNiche }: SpecialtiesProps) {
-  const visibleNiches: Niche[] = niches.filter((niche) => niche.showOnSite)
-  const visibleGames: Game[] = games.filter((game) => game.showOnSite)
-  const visibleServices: Service[] = services.filter((service) => service.showOnSite).sort((a, b) => a.order - b.order)
+  const { t, c } = useI18n()
+  const visibleNiches: Niche[] = c.niches.filter((niche) => niche.showOnSite)
+  const visibleGames: Game[] = c.games.filter((game) => game.showOnSite)
+  const visibleServices: Service[] = c.services.filter((service) => service.showOnSite).sort((a, b) => a.order - b.order)
   const countBy = (key: 'game' | 'niche', id: string) => projects.filter((project) => project[key] === id).length
 
   return (
@@ -31,15 +28,15 @@ export function Specialties({ projects, onFilterGame, onFilterNiche }: Specialti
       <SectionHeading
         id="especialidades-titulo"
         index="02"
-        label="Especialidades"
+        label={t.sections.specialties}
         sprite="star"
-        title={site.sections.specialties.title}
-        intro={site.sections.specialties.intro}
+        title={c.site.sections.specialties.title}
+        intro={c.site.sections.specialties.intro}
       />
 
       {visibleNiches.length > 0 && (
         <div className="mt-16 grid gap-6 lg:mt-24 lg:grid-cols-12">
-          <h3 className="label-mono text-subtle lg:col-span-3">Nichos</h3>
+          <h3 className="label-mono text-subtle lg:col-span-3">{t.specialties.niches}</h3>
           <ul className="grid gap-4 md:grid-cols-2 lg:col-span-9">
             {visibleNiches.map((niche, index) => (
               <NichePanel
@@ -57,8 +54,8 @@ export function Specialties({ projects, onFilterGame, onFilterNiche }: Specialti
       {visibleGames.length > 0 && (
         <div className="mt-16 grid gap-6 lg:mt-24 lg:grid-cols-12">
           <div className="lg:col-span-3">
-            <h3 className="label-mono text-subtle">Jogos</h3>
-            <p className="mt-3 hidden font-pixel text-[13px] text-subtle lg:block">Escolha seu cartucho</p>
+            <h3 className="label-mono text-subtle">{t.specialties.games}</h3>
+            <p className="mt-3 hidden font-pixel text-[13px] text-subtle lg:block">{t.specialties.pickCartridge}</p>
           </div>
           <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:col-span-9 xl:grid-cols-4">
             {visibleGames.map((game, index) => (
@@ -76,7 +73,7 @@ export function Specialties({ projects, onFilterGame, onFilterNiche }: Specialti
 
       {visibleServices.length > 0 && (
         <div className="mt-16 grid gap-6 lg:mt-24 lg:grid-cols-12">
-          <h3 className="label-mono text-subtle lg:col-span-3">Estilos de edição</h3>
+          <h3 className="label-mono text-subtle lg:col-span-3">{t.specialties.styles}</h3>
           <ol className="grid gap-px border border-line bg-line sm:grid-cols-2 lg:col-span-9">
             {visibleServices.map((service, index) => (
               <li key={service.id} className="group relative flex min-h-60 flex-col justify-between gap-10 overflow-hidden bg-bg p-6 transition-colors hover:bg-surface lg:p-8 sm:last:odd:col-span-2">
@@ -115,6 +112,7 @@ interface NichePanelProps {
 }
 
 function NichePanel({ niche, index, count, onFilter }: NichePanelProps) {
+  const { t, locale } = useI18n()
   const dark = niche.id === 'dark'
   // Vlogs e outros nichos: visual de vídeo de criador (visor de câmera, reações e player)
   const creators = niche.id === 'criadores'
@@ -129,12 +127,14 @@ function NichePanel({ niche, index, count, onFilter }: NichePanelProps) {
       {dark ? <DarkBackdrop /> : creators ? <CreatorBackdrop /> : <GamingBackdrop />}
 
       <div className="relative flex items-start justify-between gap-4">
-        <span className={cx('label-mono', dark ? 'text-pop-red' : creators ? 'text-pop-pink' : 'text-accent')}>Nicho {pad(index + 1)}</span>
+        <span className={cx('label-mono', dark ? 'text-pop-red' : creators ? 'text-pop-pink' : 'text-accent')}>
+          {t.specialties.niche} {pad(index + 1)}
+        </span>
         {dark ? (
-          <span className="font-pixel text-[12px] text-pop-red">● Rec</span>
+          <span className="font-pixel text-[12px] text-pop-red">{t.specialties.rec}</span>
         ) : creators ? (
           <span aria-hidden="true" className="bg-pop-pink px-3 py-1.5 font-pixel text-[12px] text-ink">
-            Inscrever-se
+            {t.specialties.subscribe}
           </span>
         ) : (
           <GamingHud />
@@ -152,7 +152,7 @@ function NichePanel({ niche, index, count, onFilter }: NichePanelProps) {
         </h4>
         <p className="mt-5 max-w-md text-muted text-pretty">{niche.description}</p>
         {niche.formats.length > 0 && (
-          <ul className="mt-6 flex flex-wrap gap-2" aria-label={`Formatos de ${niche.name}`}>
+          <ul className="mt-6 flex flex-wrap gap-2" aria-label={t.specialties.formatsOf(niche.name)}>
             {niche.formats.map((format) => (
               <li
                 key={format}
@@ -163,11 +163,11 @@ function NichePanel({ niche, index, count, onFilter }: NichePanelProps) {
             ))}
           </ul>
         )}
-        {dark && <DarkCaption />}
+        {dark && <DarkCaption key={locale} />}
         {creators && <CreatorPlayerBar />}
         {count > 0 && (
           <button type="button" onClick={onFilter} className="label-mono mt-8 whitespace-nowrap text-fg transition-colors hover:text-accent">
-            Ver {plural(count, 'trabalho', 'trabalhos')} <span aria-hidden="true">→</span>
+            {t.specialties.see(count)} <span aria-hidden="true">→</span>
           </button>
         )}
       </Reveal>
@@ -229,6 +229,7 @@ function GamingBackdrop() {
 
 /** HUD de videogame: vida, XP e combo. Decorativo. */
 function GamingHud() {
+  const { t } = useI18n()
   return (
     <div aria-hidden="true" className="w-32 space-y-1.5 font-pixel text-[11px] text-subtle sm:w-40">
       {[
@@ -242,7 +243,7 @@ function GamingHud() {
           </div>
         </div>
       ))}
-      <p className="text-right text-pop-yellow">Combo x3</p>
+      <p className="text-right text-pop-yellow">{t.specialties.combo}</p>
     </div>
   )
 }
@@ -261,6 +262,7 @@ function DarkBackdrop() {
 
 /** Legenda estilo YouTube sendo digitada, com frases de canal dark. */
 function DarkCaption() {
+  const { darkCaptions } = useI18n().c
   const [reduceMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const [line, setLine] = useState(0)
   const [chars, setChars] = useState(0)
@@ -283,7 +285,7 @@ function DarkCaption() {
       reduceMotion ? 3200 : typing ? 45 : 1800,
     )
     return () => window.clearTimeout(timer)
-  }, [chars, text, reduceMotion])
+  }, [chars, text, reduceMotion, darkCaptions.length])
 
   if (!text) return null
 
@@ -303,6 +305,7 @@ interface GameCartridgeProps {
 
 /** Cartucho de videogame com a cor e o sprite do jogo. Inclina em 3D com o mouse. */
 function GameCartridge({ game, index, count, onFilter }: GameCartridgeProps) {
+  const { t } = useI18n()
   const tiltRef = useTilt<HTMLDivElement>(12)
   const image = resolveAsset(game.image)
   const color = game.color ?? 'var(--color-accent)'
@@ -338,7 +341,7 @@ function GameCartridge({ game, index, count, onFilter }: GameCartridgeProps) {
       </div>
       {count > 0 && (
         <button type="button" onClick={onFilter} className="label-mono mt-3 self-start text-subtle transition-colors hover:text-accent">
-          Ver {plural(count, 'trabalho', 'trabalhos')} <span aria-hidden="true">→</span>
+          {t.specialties.see(count)} <span aria-hidden="true">→</span>
         </button>
       )}
     </li>

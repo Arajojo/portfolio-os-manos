@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { tickerGames, tickerMemes } from '../../data/memes'
+import { useI18n } from '../../i18n/context'
 import { cx } from '../../lib/cx'
 import type { SpriteName } from '../../lib/sprites'
 import { PixelSprite } from './PixelSprite'
@@ -47,6 +47,8 @@ export function Marquee({ items, tone, reverse, rotate = 0, duration = 40, class
 
 /** Duas faixas cruzadas entre seções, como fita adesiva colada na página. */
 export function TapeDivider({ variant = 'default' }: { variant?: 'default' | 'alt' }) {
+  const { c } = useI18n()
+  const { tickerGames, tickerMemes } = c
   return (
     <div className="relative overflow-hidden py-10 sm:py-14">
       <Marquee items={variant === 'alt' ? tickerMemes : tickerGames} tone="accent" rotate={-2.5} duration={45} className="relative z-10 -mx-8" />

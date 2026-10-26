@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { site } from '../data/site'
+import { useI18n } from '../i18n/context'
 import { cx, pad } from '../lib/cx'
 import type { SpriteName } from '../lib/sprites'
 import { PixelSprite } from './art/PixelSprite'
@@ -15,42 +15,43 @@ const ECG_PATH =
   'M0 40 H70 L80 40 L88 30 L96 40 H112 L120 6 L130 74 L140 26 L148 40 H230 L240 40 L248 30 L256 40 H272 L280 6 L290 74 L300 26 L308 40 H390 L400 40 L408 30 L416 40 H432 L440 6 L450 74 L460 26 L468 40 H600'
 
 export function About() {
-  const { about } = site
+  const { t, c } = useI18n()
+  const { about } = c.site
   const process = about.process.filter((step) => step.trim())
   const differentials = about.differentials.filter((item) => item.trim())
 
   const blocks: { title: string; label: string; sprite: SpriteName; field: string; content: ReactNode }[] = [
     {
-      title: 'A história',
-      label: 'Capítulo 01',
+      title: t.about.history,
+      label: t.about.chapter,
       sprite: 'controller',
       field: 'about.history',
       content: about.history.trim() && <History text={about.history} />,
     },
     {
-      title: 'Visão criativa',
-      label: 'Objetivo final',
+      title: t.about.vision,
+      label: t.about.goal,
       sprite: 'star',
       field: 'about.vision',
       content: about.vision.trim() && <Vision text={about.vision} />,
     },
     {
-      title: 'Processo',
-      label: `Mapa · ${process.length} fases`,
+      title: t.about.process,
+      label: t.about.map(process.length),
       sprite: 'play',
       field: 'about.process',
       content: process.length > 0 && <ProcessMap steps={process} />,
     },
     {
-      title: 'Com quem queremos trabalhar',
-      label: 'Diálogo',
+      title: t.about.idealCreator,
+      label: t.about.dialog,
       sprite: 'sword',
       field: 'about.idealCreator',
       content: about.idealCreator.trim() && <DialogBox text={about.idealCreator} />,
     },
     {
-      title: 'Diferenciais',
-      label: 'Power-ups',
+      title: t.about.differentials,
+      label: t.about.powerUps,
       sprite: 'bolt',
       field: 'about.differentials',
       content: differentials.length > 0 && <PowerUps items={differentials} />,
@@ -60,7 +61,7 @@ export function About() {
   return (
     <section id="sobre" aria-labelledby="sobre-titulo" className="relative overflow-hidden py-20 lg:py-32">
       <div className="container-page relative">
-        <SectionHeading id="sobre-titulo" index="05" label="Sobre" sprite="heart" title={site.sections.about.title} />
+        <SectionHeading id="sobre-titulo" index="05" label={t.sections.about} sprite="heart" title={c.site.sections.about.title} />
 
         <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:items-center lg:gap-6">
           <Reveal className="lg:col-span-6 lg:col-start-4">
@@ -76,7 +77,7 @@ export function About() {
         <div className="mt-16 lg:mt-24">
           {blocks.map((block) =>
             block.content ? (
-              <Reveal key={block.title} className="grid gap-5 border-t border-line py-10 lg:grid-cols-12 lg:gap-6 lg:py-14">
+              <Reveal key={block.field} className="grid gap-5 border-t border-line py-10 lg:grid-cols-12 lg:gap-6 lg:py-14">
                 <div className="lg:col-span-3 lg:col-start-1">
                   <p className="flex items-center gap-2 font-pixel text-[12px] text-accent">
                     <PixelSprite name={block.sprite} className="size-4" />
@@ -87,7 +88,7 @@ export function About() {
                 <div className="lg:col-span-8 lg:col-start-4">{block.content}</div>
               </Reveal>
             ) : (
-              <PendingNote key={block.title} className="mt-3 lg:ml-[25%]">
+              <PendingNote key={block.field} className="mt-3 lg:ml-[25%]">
                 “{block.title}” em src/data/site.ts ({block.field})
               </PendingNote>
             ),
@@ -98,12 +99,14 @@ export function About() {
   )
 }
 
-/** Destaca a palavra "coração" do texto com um coração em pixel batendo. */
+/** Destaca a palavra "coração" (ou "heart", em inglês) com um coração em pixel batendo. */
 function WithHeart({ text }: { text: string }) {
+  const word = useI18n().t.about.heartWord
+  const pattern = new RegExp(`\\b(${word})\\b`, 'i')
   return (
     <>
-      {text.split(/(coração)/i).map((part, index) =>
-        /^coração$/i.test(part) ? (
+      {text.split(pattern).map((part, index) =>
+        part.toLowerCase() === word.toLowerCase() ? (
           <span key={index} className="whitespace-nowrap text-pop-red underline decoration-pop-red/50 decoration-wavy decoration-2 underline-offset-[0.18em]">
             {part}
             <PixelSprite name="heart" className="heartbeat ml-[0.18em] inline-block size-[0.75em] align-[-0.05em]" />
@@ -118,13 +121,14 @@ function WithHeart({ text }: { text: string }) {
 
 /** Card de "status" com monitor cardíaco e barra de vida em corações. Decorativo. */
 function HeartMonitor() {
+  const { t } = useI18n()
   return (
     <div aria-hidden="true" className="relative overflow-hidden border-2 border-pop-red/60 bg-ink p-5 shadow-[8px_8px_0_rgb(0_0_0/0.55)]">
       <div className="scanlines absolute inset-0 opacity-50" />
       <div className="relative flex items-center justify-between font-pixel text-[12px]">
-        <span className="text-subtle">Status</span>
+        <span className="text-subtle">{t.about.status}</span>
         <span className="text-pop-red">
-          <span className="motion-safe:animate-blink">●</span> Ao vivo
+          <span className="motion-safe:animate-blink">●</span> {t.about.live}
         </span>
       </div>
 
@@ -139,19 +143,20 @@ function HeartMonitor() {
       </svg>
 
       <div className="relative mt-5 flex items-center justify-between gap-3">
-        <span className="font-pixel text-[11px] text-subtle">HP</span>
+        <span className="font-pixel text-[11px] text-subtle">{t.about.hp}</span>
         <div className="flex gap-1.5">
           {Array.from({ length: 5 }, (_, index) => (
             <PixelSprite key={index} name="heart" className="size-5" />
           ))}
         </div>
       </div>
-      <p className="relative mt-4 text-center font-pixel text-[13px] text-fg">Feito com coração</p>
+      <p className="relative mt-4 text-center font-pixel text-[13px] text-fg">{t.about.madeWithHeart}</p>
     </div>
   )
 }
 
 function History({ text }: { text: string }) {
+  const { t } = useI18n()
   return (
     <div className="relative border-l-2 border-accent/60 pl-6 sm:pl-8">
       <p className="max-w-3xl whitespace-pre-line text-lg leading-relaxed text-muted text-pretty first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:font-wide first-letter:text-6xl first-letter:font-black first-letter:leading-[0.8] first-letter:text-accent">
@@ -161,7 +166,7 @@ function History({ text }: { text: string }) {
         <PixelSprite name="controller" className="bob size-7" />
         <PixelSprite name="star" className="bob size-5 [animation-delay:-0.8s]" />
         <PixelSprite name="sparkle" className="bob size-5 [animation-delay:-1.6s]" />
-        <span className="font-pixel text-[11px] text-subtle">Animes / games / edição / amizade</span>
+        <span className="font-pixel text-[11px] text-subtle">{t.about.historyTags}</span>
       </div>
     </div>
   )
@@ -182,6 +187,7 @@ function Vision({ text }: { text: string }) {
 
 /** Processo como um mapa de fases de videogame. */
 function ProcessMap({ steps }: { steps: string[] }) {
+  const { t } = useI18n()
   return (
     <ol className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {steps.map((step, index) => {
@@ -196,7 +202,7 @@ function ProcessMap({ steps }: { steps: string[] }) {
             )}
           >
             <div className="flex items-center justify-between">
-              <span className={cx('font-pixel text-[12px]', last ? 'text-accent' : 'text-subtle')}>{last ? 'Fase final' : `Fase ${pad(index + 1)}`}</span>
+              <span className={cx('font-pixel text-[12px]', last ? 'text-accent' : 'text-subtle')}>{last ? t.about.finalPhase : t.about.phase(pad(index + 1))}</span>
               {last ? <PixelSprite name="trophy" className="bob size-6" /> : <PixelSprite name="play" className="size-3 opacity-50 transition-opacity group-hover:opacity-100" />}
             </div>
             <p className="text-lg font-semibold leading-tight text-balance">{step}</p>
@@ -230,6 +236,7 @@ function DialogBox({ text }: { text: string }) {
 
 /** Diferenciais como power-ups coletáveis. */
 function PowerUps({ items }: { items: string[] }) {
+  const { t } = useI18n()
   return (
     <ul className="grid gap-4 sm:grid-cols-2">
       {items.map((item, index) => {
@@ -245,7 +252,7 @@ function PowerUps({ items }: { items: string[] }) {
             </div>
             <div>
               <p className="font-pixel text-[11px]" style={{ color }}>
-                Power-up {pad(index + 1)}
+                {t.about.powerUp(pad(index + 1))}
               </p>
               <p className="mt-1.5 text-lg font-medium leading-snug text-fg text-pretty">{item}</p>
             </div>

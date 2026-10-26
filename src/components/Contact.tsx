@@ -1,6 +1,5 @@
 import { editors } from '../data/editors'
-import { quest } from '../data/memes'
-import { site } from '../data/site'
+import { useI18n } from '../i18n/context'
 import { getEmailLink, getInstagramDmLink, getInstagramLink, getOtherLinks, getWhatsAppLink, type ContactLink } from '../lib/contact'
 import { PixelSprite } from './art/PixelSprite'
 import { PendingNote } from './PendingNote'
@@ -8,7 +7,9 @@ import { Reveal } from './Reveal'
 import { SectionHeading } from './SectionHeading'
 
 export function Contact() {
-  const { contact } = site
+  const { t, c } = useI18n()
+  const { contact } = c.site
+  const { quest } = c
   const whatsapp = getWhatsAppLink(contact.whatsapp, contact.whatsappMessage)
   const email = getEmailLink(contact.email, contact.emailSubject)
   const instagram = getInstagramLink(contact.instagram)
@@ -22,7 +23,7 @@ export function Contact() {
     <section id="contato" aria-labelledby="contato-titulo" className="relative overflow-hidden border-t border-line bg-surface">
       <div aria-hidden="true" className="dot-grid pointer-events-none absolute inset-0 opacity-60" />
       <div className="container-page relative py-20 lg:py-28">
-        <SectionHeading id="contato-titulo" index="06" label="Contato" sprite="sword" title={contact.title} />
+        <SectionHeading id="contato-titulo" index="06" label={t.sections.contact} sprite="sword" title={contact.title} />
 
         <div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-12 lg:gap-6">
           <Reveal className="lg:col-span-5 lg:col-start-4">
@@ -34,13 +35,13 @@ export function Contact() {
                   {quest.label}
                 </p>
                 <span aria-hidden="true" className="bg-pop-pink px-2 py-1 font-pixel text-[12px] text-ink motion-safe:animate-blink">
-                  Nova!
+                  {t.contact.new}
                 </span>
               </div>
 
               <p className="mt-6 text-lg text-muted text-pretty">{contact.text}</p>
 
-              <h3 className="label-mono mt-8 text-subtle">Objetivos</h3>
+              <h3 className="label-mono mt-8 text-subtle">{t.contact.objectives}</h3>
               <ol className="mt-3 space-y-3">
                 {quest.objectives.map((objective) => (
                   <li key={objective} className="flex items-start gap-3">
@@ -62,8 +63,8 @@ export function Contact() {
                   rel={quoteLink.external ? 'noopener noreferrer' : undefined}
                   className="btn-primary mt-8"
                 >
-                  Aceitar missão: solicitar orçamento <span aria-hidden="true">→</span>
-                  <span className="sr-only"> por {quoteLink.label}</span>
+                  {t.contact.accept} <span aria-hidden="true">→</span>
+                  <span className="sr-only">{t.contact.via(quoteLink.label)}</span>
                 </a>
               )}
               {links.length === 0 && <p className="mt-6 text-muted text-pretty">{contact.fallbackText}</p>}
@@ -78,7 +79,7 @@ export function Contact() {
           <Reveal className="lg:col-span-3 lg:col-start-10" delay={100}>
             {links.length > 0 && (
               <>
-                <h3 className="label-mono text-subtle">Fale com a gente</h3>
+                <h3 className="label-mono text-subtle">{t.contact.talk}</h3>
                 <ul className="mt-4 border-t border-line">
                   {links.map((link) => (
                     <li key={link.id} className="border-b border-line">
@@ -89,7 +90,7 @@ export function Contact() {
               </>
             )}
 
-            <h3 className={links.length > 0 ? 'label-mono mt-12 text-subtle' : 'label-mono text-subtle'}>Canais dos editores</h3>
+            <h3 className={links.length > 0 ? 'label-mono mt-12 text-subtle' : 'label-mono text-subtle'}>{t.contact.editorChannels}</h3>
             <ul className="mt-4 border-t border-line">
               {editors.map((editor) => (
                 <li key={editor.id} className="border-b border-line">

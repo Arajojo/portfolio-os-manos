@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { site } from '../data/site'
+import { useI18n } from '../i18n/context'
 import { cx, pad } from '../lib/cx'
+import { LanguageSwitch } from './LanguageSwitch'
 
 interface MobileMenuProps {
   items: readonly { id: string; label: string }[]
@@ -8,6 +9,7 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ items, active }: MobileMenuProps) {
+  const { t, c } = useI18n()
   const [open, setOpen] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -47,7 +49,7 @@ export function MobileMenu({ items, active }: MobileMenuProps) {
         onClick={() => setOpen((value) => !value)}
         className="label-mono flex h-10 items-center gap-3 border border-line-strong px-3 text-fg"
       >
-        {open ? 'Fechar' : 'Menu'}
+        {open ? t.header.close : t.header.menu}
         <span aria-hidden="true" className="relative block h-2.5 w-4">
           <span className={cx('absolute left-0 h-px w-4 bg-current transition-transform', open ? 'top-1/2 rotate-45' : 'top-0')} />
           <span className={cx('absolute left-0 h-px w-4 bg-current transition-transform', open ? 'top-1/2 -rotate-45' : 'bottom-0')} />
@@ -60,7 +62,7 @@ export function MobileMenu({ items, active }: MobileMenuProps) {
         hidden={!open}
         className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto border-t border-line bg-bg"
       >
-        <nav aria-label="Menu" className="container-page flex min-h-full flex-col justify-between py-8">
+        <nav aria-label={t.header.mobileNav} className="container-page flex min-h-full flex-col justify-between py-8">
           <ul>
             {items.map((item, index) => (
               <li key={item.id} className="border-b border-line">
@@ -86,7 +88,12 @@ export function MobileMenu({ items, active }: MobileMenuProps) {
               </li>
             ))}
           </ul>
-          <p className="label-mono mt-10 text-subtle">{site.name} — {site.tagline}</p>
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+            <p className="label-mono text-subtle">
+              {c.site.name} — {c.site.tagline}
+            </p>
+            <LanguageSwitch className="flex" />
+          </div>
         </nav>
       </div>
     </div>

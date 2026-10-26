@@ -32,6 +32,8 @@ Em `npm run dev`, os campos ainda não preenchidos aparecem com o aviso **"Pende
 | `src/data/games.ts` | Jogos e seus cartuchos: cor (`color`), pixel art (`sprite`) e imagem opcional (`image`) |
 | `src/data/services.ts` | Especialidades / estilos de edição, com pixel art e legenda de meme (`meme`) |
 | `src/data/memes.ts` | Adesivos arrastáveis do topo, faixas que correm, dicas da tela de loading, legendas do canal dark, conquistas e a missão de contato |
+| `src/data/en.ts` | Versão em inglês de todo o conteúdo (veja "Português e inglês") |
+| `src/i18n/ui.ts` | Textos fixos da interface (botões, menus, rótulos) em português e inglês |
 | `src/lib/sprites.ts` | Desenhos em pixel art (dá para criar novos editando as grades de letras) |
 | `public/images/editors/` | Fotos de perfil |
 | `public/images/projects/` | Thumbnails dos vídeos |
@@ -158,6 +160,16 @@ Tudo o que é brincadeira fica em `src/data/memes.ts`:
 Segredo: digitar ↑ ↑ ↓ ↓ ← → ← → B A em qualquer lugar do site solta uma chuva de confete em pixel art.
 
 As animações decorativas (faixas, glitch, adesivos balançando, hitmarker do clique) desligam sozinhas para quem ativou "reduzir movimento" no sistema.
+
+## Português e inglês
+
+O site tem as duas línguas. O seletor **PT | EN** fica no header (no celular, dentro do menu). A escolha fica salva no navegador do visitante. Na primeira visita, o site abre em português para quem usa o navegador em português, e em inglês para os demais. Para mandar um link já em uma língua, use `?lang=en` ou `?lang=pt` no endereço.
+
+- O conteúdo em português continua nos arquivos de sempre (`site.ts`, `projects.ts`, `editors.ts`...).
+- A tradução de tudo fica em `src/data/en.ts`, organizada pelos mesmos `id`s.
+- Ao adicionar um vídeo, nicho, estilo, jogo ou conquista, acrescente a tradução em `en.ts` com o mesmo `id`. Sem tradução, o site mostra o texto em português, sem quebrar nada. Em `npm run dev`, o console do navegador avisa o que está faltando, e o `npm test` também.
+- Os títulos dos vídeos ficam como no YouTube. Se quiser traduzir um, use `title` dentro de `projects` em `en.ts`.
+- Os textos fixos da interface (botões, menus, rótulos) ficam em `src/i18n/ui.ts`.
 
 ## Link direto para um vídeo
 

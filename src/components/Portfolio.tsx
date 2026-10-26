@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState, type Ref } from 'react'
-import { loadingTips } from '../data/memes'
-import { site } from '../data/site'
+import { useI18n } from '../i18n/context'
 import { getAspectRatio } from '../lib/content'
-import { plural } from '../lib/cx'
 import { applyFilters, type Filters } from '../lib/filters'
 import { transitionName } from '../lib/viewTransition'
 import type { Project } from '../types'
@@ -31,6 +29,7 @@ interface PortfolioProps {
 }
 
 export function Portfolio({ projects, filters, onFiltersChange, onOpen, onIntent, headingRef }: PortfolioProps) {
+  const { t, c } = useI18n()
   const results = useMemo(() => applyFilters(projects, filters), [projects, filters])
 
   return (
@@ -39,10 +38,10 @@ export function Portfolio({ projects, filters, onFiltersChange, onOpen, onIntent
         ref={headingRef}
         id="portfolio-titulo"
         index="01"
-        label="Portfólio"
+        label={t.sections.portfolio}
         sprite="play"
-        title={site.sections.portfolio.title}
-        intro={projects.length > 0 ? site.sections.portfolio.intro : undefined}
+        title={c.site.sections.portfolio.title}
+        intro={projects.length > 0 ? c.site.sections.portfolio.intro : undefined}
       />
 
       {projects.length === 0 ? (
@@ -52,14 +51,14 @@ export function Portfolio({ projects, filters, onFiltersChange, onOpen, onIntent
           <FilterBar projects={projects} filters={filters} onChange={onFiltersChange} />
 
           <p aria-live="polite" className="label-mono mt-6 text-subtle">
-            {plural(results.length, 'projeto', 'projetos')}
+            {t.portfolio.count(results.length)}
           </p>
 
           {results.length === 0 ? (
             <div className="mt-8 border border-line p-8 lg:p-12">
-              <p className="text-xl">Nenhum projeto com essa combinação de filtros.</p>
+              <p className="text-xl">{t.portfolio.noResults}</p>
               <button type="button" onClick={() => onFiltersChange({})} className="btn-secondary mt-6">
-                Limpar filtros
+                {t.portfolio.clearFilters}
               </button>
             </div>
           ) : (
@@ -87,12 +86,13 @@ function useRotatingTip(tips: string[], interval = 4500) {
     const timer = window.setInterval(() => setIndex((value) => (value + 1) % tips.length), interval)
     return () => window.clearInterval(timer)
   }, [tips, interval])
-  return tips[index]
+  return tips.length ? tips[index % tips.length] : undefined
 }
 
 /** Portfólio vazio vira uma tela de loading de videogame (que trava em 99%, claro). */
 function EmptyState() {
-  const tip = useRotatingTip(loadingTips)
+  const { t, c } = useI18n()
+  const tip = useRotatingTip(c.loadingTips)
 
   return (
     <Reveal className="mt-14 grid border-2 border-line-strong bg-surface lg:grid-cols-12">
@@ -106,7 +106,7 @@ function EmptyState() {
           <PixelSprite name="heart" className="bob size-9 [animation-delay:-1.1s]" />
         </div>
 
-        <p className="relative font-pixel text-[15px] text-accent sm:text-lg">Carregando portfólio</p>
+        <p className="relative font-pixel text-[15px] text-accent sm:text-lg">{t.portfolio.loading}</p>
 
         <div aria-hidden="true" className="relative h-7 w-full max-w-md border-2 border-fg p-1">
           <div
@@ -114,27 +114,27 @@ function EmptyState() {
             style={{ background: 'repeating-linear-gradient(90deg, var(--color-accent) 0 14px, transparent 14px 18px)' }}
           />
         </div>
-        <p className="relative font-pixel text-[13px] text-subtle sm:text-[14px]">99% · travou igual upload de madrugada</p>
+        <p className="relative font-pixel text-[13px] text-subtle sm:text-[14px]">{t.portfolio.stuck}</p>
 
         <p className="relative max-w-sm text-muted text-pretty">
-          <span className="font-pixel text-[13px] text-pop-yellow">Dica: </span>
+          <span className="font-pixel text-[13px] text-pop-yellow">{t.portfolio.tip}</span>
           {tip}
         </p>
       </div>
       <div className="flex flex-col justify-end gap-6 border-t-2 border-line-strong p-6 sm:p-10 lg:col-span-5 lg:border-l-2 lg:border-t-0">
-        <p className="label-mono text-accent">Portfólio em montagem</p>
+        <p className="label-mono text-accent">{t.portfolio.building}</p>
         <h3 className="font-wide text-3xl font-extrabold uppercase leading-[0.95] tracking-tight text-balance">
-          Os primeiros trabalhos chegam em breve
+          {t.portfolio.soon}
         </h3>
         <p className="text-muted text-pretty">
-          Os vídeos editados por Os Manos vão aparecer aqui. Enquanto isso, conheça os editores ou fale com a dupla.
+          {t.portfolio.soonText}
         </p>
         <div className="flex flex-wrap gap-3">
           <a href="#editores" className="btn-secondary">
-            Conhecer os editores
+            {t.portfolio.meetEditors}
           </a>
           <a href="#contato" className="btn-primary">
-            Contato
+            {t.portfolio.contact}
           </a>
         </div>
         <PendingNote>cadastre vídeos em src/data/projects.ts com published: true</PendingNote>

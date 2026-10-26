@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { useTilt } from '../hooks/useTilt'
+import { useI18n } from '../i18n/context'
 import { isSafeUrl } from '../lib/contact'
 import { cx } from '../lib/cx'
 import type { Editor, LinkItem } from '../types'
@@ -46,6 +47,7 @@ export function PlayerCard({
   socials = [],
   extraAction,
 }: PlayerCardProps) {
+  const { t } = useI18n()
   const tiltRef = useTilt<HTMLElement>(5)
   const titleId = `player-${id}`
   const groups = tagGroups.filter((group) => group.items.length > 0)
@@ -67,7 +69,7 @@ export function PlayerCard({
         <div className="relative mt-3 aspect-[4/5] overflow-hidden bg-ink lg:aspect-square">
           <Avatar
             editor={person}
-            alt={`Foto de perfil de ${person.displayName}`}
+            alt={t.credit.photoOf(person.displayName)}
             className="absolute inset-0 size-full transition-transform duration-500 group-hover:scale-105"
             monogramClassName="hatch absolute inset-0 text-[clamp(8rem,28vw,16rem)] leading-none text-[color:var(--player)]! opacity-60"
           />
@@ -83,7 +85,7 @@ export function PlayerCard({
             className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-1 font-pixel text-[13px] text-ink opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
             style={{ background: color }}
           >
-            Selecionado!
+            {t.editors.selected}
           </span>
         </div>
 
@@ -118,7 +120,7 @@ export function PlayerCard({
               style={{ background: color }}
             >
               {primaryLink.label} <span aria-hidden="true">↗</span>
-              <span className="sr-only"> de {handle} (nova aba)</span>
+              <span className="sr-only">{t.editors.newTabOf(handle)}</span>
             </a>
             {extraAction}
             {links.map((social) => (

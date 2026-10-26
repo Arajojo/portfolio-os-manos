@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
-import { heroStickers } from '../data/memes'
-import { site } from '../data/site'
+import { useI18n } from '../i18n/context'
+import type { UiStrings } from '../i18n/ui'
 import { getThumbnailSources } from '../lib/content'
 import { cx } from '../lib/cx'
 import type { SpriteName } from '../lib/sprites'
@@ -9,20 +9,20 @@ import { PixelSprite } from './art/PixelSprite'
 import { Stickers } from './art/Stickers'
 import { SmartImage } from './SmartImage'
 
-const CLIPS: { label: string; width: number; color: string; sprite: SpriteName }[] = [
-  { label: 'Intro', width: 14, color: 'var(--color-accent)', sprite: 'play' },
-  { label: 'Gameplay', width: 30, color: 'var(--color-pop-cyan)', sprite: 'controller' },
-  { label: 'Meme', width: 10, color: 'var(--color-pop-pink)', sprite: 'skull' },
-  { label: 'Narração', width: 24, color: 'var(--color-pop-purple)', sprite: 'mic' },
-  { label: 'Outro', width: 16, color: 'var(--color-pop-yellow)', sprite: 'trophy' },
+const CLIPS: { key: keyof UiStrings['hero']['clips']; width: number; color: string; sprite: SpriteName }[] = [
+  { key: 'intro', width: 14, color: 'var(--color-accent)', sprite: 'play' },
+  { key: 'gameplay', width: 30, color: 'var(--color-pop-cyan)', sprite: 'controller' },
+  { key: 'meme', width: 10, color: 'var(--color-pop-pink)', sprite: 'skull' },
+  { key: 'narration', width: 24, color: 'var(--color-pop-purple)', sprite: 'mic' },
+  { key: 'outro', width: 16, color: 'var(--color-pop-yellow)', sprite: 'trophy' },
 ]
 
 /** Efeitos sonoros na trilha A2 (posição e largura em %). */
-const SFX = [
-  { label: 'vine boom', left: 21, width: 7 },
-  { label: 'bruh', left: 46, width: 5 },
-  { label: 'risada', left: 61, width: 8 },
-  { label: 'whoosh', left: 79, width: 7 },
+const SFX: { key: keyof UiStrings['hero']['sfx']; left: number; width: number }[] = [
+  { key: 'boom', left: 21, width: 7 },
+  { key: 'bruh', left: 46, width: 5 },
+  { key: 'laugh', left: 61, width: 8 },
+  { key: 'whoosh', left: 79, width: 7 },
 ]
 
 const MARKERS = [
@@ -41,6 +41,7 @@ const WAVE = Array.from({ length: 160 }, (_, i) => {
 
 /** Composição de linha do tempo de edição. Puramente visual (aria-hidden). */
 function HeroTimeline({ projects }: { projects: Project[] }) {
+  const { t } = useI18n()
   const thumbnails = projects.map(getThumbnailSources).filter((sources) => sources.length > 0)
 
   return (
@@ -70,7 +71,7 @@ function HeroTimeline({ projects }: { projects: Project[] }) {
           {CLIPS.map((clip, index) => {
             const sources = thumbnails[index % Math.max(thumbnails.length, 1)] ?? []
             return (
-              <div key={clip.label} className="relative overflow-hidden border border-line-strong bg-surface" style={{ width: `${clip.width}%` }}>
+              <div key={clip.key} className="relative overflow-hidden border border-line-strong bg-surface" style={{ width: `${clip.width}%` }}>
                 <SmartImage
                   sources={sources}
                   alt=""
@@ -83,7 +84,7 @@ function HeroTimeline({ projects }: { projects: Project[] }) {
                   }
                 />
                 <span className="absolute inset-x-0 top-0 h-[3px]" style={{ background: clip.color }} />
-                <span className="label-mono absolute left-1.5 top-1.5 truncate text-[10px] text-fg">{clip.label}</span>
+                <span className="label-mono absolute left-1.5 top-1.5 truncate text-[10px] text-fg">{t.hero.clips[clip.key]}</span>
               </div>
             )
           })}
@@ -104,11 +105,11 @@ function HeroTimeline({ projects }: { projects: Project[] }) {
         <div className="relative h-6 flex-1">
           {SFX.map((sfx) => (
             <span
-              key={sfx.label}
+              key={sfx.key}
               className="label-mono absolute inset-y-0 flex items-center truncate border border-pop-pink/60 bg-pop-pink/15 px-1.5 text-[9px] normal-case text-pop-pink"
               style={{ left: `${sfx.left}%`, width: `${sfx.width}%` }}
             >
-              {sfx.label}
+              {t.hero.sfx[sfx.key]}
             </span>
           ))}
         </div>
@@ -137,48 +138,49 @@ function WordLine({ text, start, className }: { text: string; start: number; cla
 }
 
 export function Hero({ featured }: { featured: Project[] }) {
+  const { t, c } = useI18n()
   return (
     <section id="inicio" aria-labelledby="hero-title" className="relative overflow-hidden">
       <div aria-hidden="true" className="dot-grid pointer-events-none absolute inset-0" />
 
       <div className="container-page relative pb-10 pt-10 lg:pb-14 lg:pt-14">
         <div className="label-mono flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-subtle">
-          <span>Estúdio de edição de vídeo</span>
+          <span>{t.hero.studio}</span>
           <span className="flex items-center gap-2">
             <span aria-hidden="true" className="size-1.5 rounded-full bg-accent motion-safe:animate-blink" />
-            YouTube Gaming · Canais dark
+            {t.hero.niches}
           </span>
         </div>
 
         <div className="relative mt-8">
           <h1
             id="hero-title"
-            aria-label={site.name}
+            aria-label={c.site.name}
             className="hero-parallax font-wide text-[clamp(3.5rem,18vw,16rem)] font-black uppercase leading-[0.8] tracking-[-0.045em] sm:text-[clamp(3.5rem,15.5vw,16rem)]"
           >
             <WordLine text="Os" start={0} />
             <WordLine text="Manos" start={2} className="sm:pl-[14%]" />
           </h1>
-          <Stickers items={heroStickers} />
+          <Stickers items={c.heroStickers} />
         </div>
 
         <HeroTimeline projects={featured} />
 
         <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:items-end">
           <p className="text-[clamp(1.75rem,3.8vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.02em] text-balance lg:col-span-7">
-            {site.headline}
+            {c.site.headline}
           </p>
           <div className="lg:col-span-4 lg:col-start-9">
-            <p className="text-lg text-muted text-pretty">{site.heroDescription}</p>
+            <p className="text-lg text-muted text-pretty">{c.site.heroDescription}</p>
             <p aria-hidden="true" className="mt-8 font-pixel text-[14px] text-accent">
-              <span className="motion-safe:animate-blink">▶</span> Press start
+              <span className="motion-safe:animate-blink">▶</span> {t.hero.pressStart}
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               <a href="#portfolio" className="btn-primary">
-                Ver trabalhos <span aria-hidden="true">↓</span>
+                {t.hero.seeWork} <span aria-hidden="true">↓</span>
               </a>
               <a href="#contato" className="btn-secondary">
-                Contato
+                {t.hero.contact}
               </a>
             </div>
           </div>

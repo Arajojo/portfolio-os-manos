@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { achievements, type Achievement } from '../../data/memes'
 import { AchievementsContext, useAchievements } from '../../hooks/useAchievements'
+import { useI18n } from '../../i18n/context'
 import { cx } from '../../lib/cx'
 import type { SpriteName } from '../../lib/sprites'
 import { PixelSprite } from '../art/PixelSprite'
@@ -116,7 +117,18 @@ export function AchievementsProvider({ children, hasProjects }: ProviderProps) {
   )
 }
 
+/** Título e descrição da conquista no idioma escolhido. */
+function useAchievementText() {
+  const { t, c } = useI18n()
+  return (achievement: Achievement) =>
+    achievement.id === PLATINUM.id
+      ? { title: t.achievements.platinumTitle, description: t.achievements.platinumDescription }
+      : (c.achievements.find((item) => item.id === achievement.id) ?? achievement)
+}
+
 function AchievementToast({ queue, onDone }: { queue: Achievement[]; onDone: () => void }) {
+  const { t } = useI18n()
+  const textOf = useAchievementText()
   const current = queue[0]
   const [leaving, setLeaving] = useState(false)
 
@@ -145,9 +157,9 @@ function AchievementToast({ queue, onDone }: { queue: Achievement[]; onDone: () 
             <PixelSprite name={current.sprite} className="size-8" />
           </div>
           <div className="min-w-0">
-            <p className="font-pixel text-[12px] text-accent">Conquista desbloqueada</p>
-            <p className="mt-1 font-pixel text-[15px] text-fg">{current.title}</p>
-            <p className="mt-1 text-sm text-muted">{current.description}</p>
+            <p className="font-pixel text-[12px] text-accent">{t.achievements.unlocked}</p>
+            <p className="mt-1 font-pixel text-[15px] text-fg">{textOf(current).title}</p>
+            <p className="mt-1 text-sm text-muted">{textOf(current).description}</p>
           </div>
         </div>
       )}
@@ -195,6 +207,8 @@ function Confetti() {
 /** Contador de troféus no header, com a lista em um popover nativo (Popover API). */
 export function AchievementsHud({ className }: { className?: string }) {
   const { list, unlocked } = useAchievements()
+  const { t } = useI18n()
+  const textOf = useAchievementText()
   const count = list.filter((item) => unlocked.has(item.id)).length
 
   return (
@@ -203,7 +217,7 @@ export function AchievementsHud({ className }: { className?: string }) {
         type="button"
         popoverTarget="conquistas"
         className={cx('flex h-10 items-center gap-2 border border-line-strong px-2.5 transition-colors hover:border-accent', className)}
-        aria-label={`Conquistas: ${count} de ${list.length}`}
+        aria-label={t.achievements.aria(count, list.length)}
       >
         <PixelSprite name="trophy" className="size-4" />
         <span className="font-pixel text-[13px] text-fg">
@@ -215,7 +229,9 @@ export function AchievementsHud({ className }: { className?: string }) {
         popover="auto"
         className="achievements-popover w-[min(22rem,calc(100vw-2rem))] border-2 border-line-strong bg-surface p-4 text-fg shadow-[8px_8px_0_rgb(0_0_0/0.6)]"
       >
-        <p className="font-pixel text-[14px] text-accent">Conquistas {count}/{list.length}</p>
+        <p className="font-pixel text-[14px] text-accent">
+          {t.achievements.title} {count}/{list.length}
+        </p>
         <ul className="mt-4 space-y-3">
           {list.map((item) => {
             const done = unlocked.has(item.id)
@@ -226,8 +242,8 @@ export function AchievementsHud({ className }: { className?: string }) {
                   <PixelSprite name={hidden ? 'skull' : item.sprite} className="size-6" />
                 </div>
                 <div className="min-w-0">
-                  <p className={cx('font-pixel text-[13px]', done ? 'text-fg' : 'text-subtle')}>{hidden ? '???' : item.title}</p>
-                  <p className="mt-1 text-xs text-subtle">{hidden ? 'Segredo. Pense em videogame antigo.' : item.description}</p>
+                  <p className={cx('font-pixel text-[13px]', done ? 'text-fg' : 'text-subtle')}>{hidden ? '???' : textOf(item).title}</p>
+                  <p className="mt-1 text-xs text-subtle">{hidden ? t.achievements.secret : textOf(item).description}</p>
                 </div>
                 {done && <span className="ml-auto font-pixel text-[13px] text-accent">✓</span>}
               </li>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { editors } from '../data/editors'
 import { site } from '../data/site'
+import { useI18n } from '../i18n/context'
 import { isSafeUrl } from '../lib/contact'
 import { PixelSprite } from './art/PixelSprite'
 
@@ -8,6 +9,7 @@ const YEAR = new Date().getFullYear()
 
 /** "CONTINUE? 9… 8… 7…" dos fliperamas. O link leva de volta ao topo. */
 function ContinueCountdown() {
+  const { t } = useI18n()
   const [seconds, setSeconds] = useState(9)
 
   useEffect(() => {
@@ -17,18 +19,19 @@ function ContinueCountdown() {
 
   return (
     <a href="#inicio" className="group inline-flex items-center gap-4">
-      <span className="font-pixel text-base text-fg sm:text-lg">Continue?</span>
+      <span className="font-pixel text-base text-fg sm:text-lg">{t.footer.continue}</span>
       <span aria-hidden="true" className="w-8 font-pixel text-3xl tabular-nums text-accent sm:text-4xl">
         {seconds}
       </span>
       <span className="label-mono text-subtle transition-colors group-hover:text-accent">
-        Voltar ao topo <span aria-hidden="true">↑</span>
+        {t.footer.backToTop} <span aria-hidden="true">↑</span>
       </span>
     </a>
   )
 }
 
 export function Footer() {
+  const { t, c } = useI18n()
   const socials = site.socials.filter((social) => social.label && isSafeUrl(social.url))
   const external = [...editors.map((editor) => ({ label: editor.handle, url: editor.channelUrl })), ...socials]
 
@@ -39,7 +42,7 @@ export function Footer() {
           <ContinueCountdown />
           <p aria-hidden="true" className="flex items-center gap-3 font-pixel text-[13px] text-subtle">
             <PixelSprite name="trophy" className="bob size-5" />
-            Obrigado por jogar
+            {t.footer.thanks}
           </p>
         </div>
 
@@ -57,7 +60,7 @@ export function Footer() {
 
         <div className="label-mono mt-10 flex flex-col gap-6 text-subtle md:flex-row md:items-end md:justify-between">
           <p>
-            © {YEAR} {site.name} — {site.tagline}
+            © {YEAR} {c.site.name} — {c.site.tagline}
           </p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {external.map((link) => (

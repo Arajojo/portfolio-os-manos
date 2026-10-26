@@ -1,16 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useI18n } from '../i18n/context'
 import { cx } from '../lib/cx'
 import { AchievementsHud } from './fx/Achievements'
+import { LanguageSwitch } from './LanguageSwitch'
 import { MobileMenu } from './MobileMenu'
 
-const NAV_ITEMS = [
-  { id: 'inicio', label: 'Início' },
-  { id: 'portfolio', label: 'Portfólio' },
-  { id: 'especialidades', label: 'Especialidades' },
-  { id: 'editores', label: 'Editores' },
-  { id: 'sobre', label: 'Sobre' },
-  { id: 'contato', label: 'Contato' },
-] as const
+const SECTION_IDS = ['inicio', 'portfolio', 'especialidades', 'editores', 'sobre', 'contato'] as const
 
 /** Seção visível no centro da tela, para destacar o link correspondente. */
 function useActiveSection(ids: readonly string[]): string | null {
@@ -33,11 +28,12 @@ function useActiveSection(ids: readonly string[]): string | null {
   return active
 }
 
-const SECTION_IDS = NAV_ITEMS.map((item) => item.id)
 
 export function Header() {
+  const { t, locale } = useI18n()
   const active = useActiveSection(SECTION_IDS)
-  const links = NAV_ITEMS.filter((item) => item.id !== 'contato')
+  const navItems = SECTION_IDS.map((id) => ({ id, label: t.nav[id] }))
+  const links = navItems.filter((item) => item.id !== 'contato')
   const listRef = useRef<HTMLUListElement>(null)
   const indicatorRef = useRef<HTMLSpanElement>(null)
 
@@ -61,18 +57,18 @@ export function Header() {
     document.fonts.ready.then(place)
     window.addEventListener('resize', place)
     return () => window.removeEventListener('resize', place)
-  }, [active])
+  }, [active, locale])
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-bg/95">
       <span aria-hidden="true" className="scroll-progress absolute inset-x-0 -bottom-px h-px bg-accent/70" />
       <div className="container-page flex h-16 items-center justify-between gap-6">
-        <a href="#inicio" className="group flex items-center gap-2.5" aria-label="Os Manos — início">
+        <a href="#inicio" className="group flex items-center gap-2.5" aria-label={t.header.homeAria}>
           <span aria-hidden="true" className="size-2.5 bg-accent transition-transform group-hover:rotate-45" />
           <span className="font-wide text-base font-extrabold uppercase tracking-tight">Os Manos</span>
         </a>
 
-        <nav aria-label="Principal" className="hidden md:block">
+        <nav aria-label={t.header.mainNav} className="hidden md:block">
           <ul ref={listRef} className="relative flex items-center gap-6 lg:gap-8">
             {links.map((item) => (
               <li key={item.id}>
@@ -97,16 +93,17 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitch className="hidden md:flex" />
           <AchievementsHud />
         <a
           href="#contato"
           aria-current={active === 'contato' ? 'location' : undefined}
           className="label-mono hidden items-center gap-2 border border-line-strong px-3 py-2 text-fg transition-colors hover:border-accent hover:text-accent md:inline-flex"
         >
-          Contato <span aria-hidden="true">→</span>
+          {t.nav.contato} <span aria-hidden="true">→</span>
         </a>
 
-        <MobileMenu items={NAV_ITEMS} active={active} />
+        <MobileMenu items={navItems} active={active} />
         </div>
       </div>
     </header>
