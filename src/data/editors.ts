@@ -21,7 +21,7 @@ export const editors = [
     channelUrl: 'https://www.youtube.com/@PatoJoga_ofc',
     tagline: 'Meu maior objetivo é conseguir tirar risadas das pessoas e fazer o dia delas pelo menos um pouco melhor. Quero que meus videos deixem o peso da vida mais leve.',
     bio: 'Oi! Eu sou o Matheus, a pessoa por trás do Pato Joga!\n\nDesde pequeno, sonho em ser Influencer. Cresci assistindo aos Youtubers de Minecraft(Tazercraft, Rezende, batista,etc...) que marcaram minha infância, me proporcionaram inúmeras risadas e criaram lembranças que guardo até hoje com muito carinho. Foram eles que me inspiraram a seguir esse caminho e a acreditar que um dia eu também poderia fazer a diferença na vida de alguém. Hoje, quero transformar esse sonho em realidade, compartilhando minha paixão, espalhando felicidade e criando vídeos que, quem sabe, um dia também se tornem parte especial da infância e das memórias de alguém.',
-    specialties: ['gameplay', 'edicao-dinamica', 'canais-dark','humor', 'highlights', 'storytelling', 'shorts', 'sound-design'],
+    specialties: ['gameplay', 'edicao-dinamica', 'canais-dark','humor', 'highlights', 'storytelling', 'shorts', 'sound-design', 'podcasts', 'reacts', 'reviews'],
     games: ['minecraft', 'roblox', 'valorant', 'fortnite', 'terror', 'outros'],
     socials: [{label: 'Instagram', url:'https://www.instagram.com/patojoga_ofc'}, {label: 'Tiktok', url: 'https://www.tiktok.com/@patojoga_ofc'}],
   },

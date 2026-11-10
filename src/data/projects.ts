@@ -49,7 +49,7 @@ export const projects: Project[] = [
     editorId: 'pato',
     published: true,
     aspectRatio: '9:16',
-    order: 3,
+    order: 4,
     },
     {
     id: 'badparenting',
@@ -64,7 +64,7 @@ export const projects: Project[] = [
     editorId: 'pato',
     published: true,
     aspectRatio: '16:9',
-    order: 4,
+    order: 5,
     },
     {
     id: 'quartetofantastico',
@@ -95,5 +95,20 @@ export const projects: Project[] = [
     published: true,
     aspectRatio: '16:9',
     order: 2,
+    },
+        {
+    id: 'osmanosint',
+    slug: 'osmanosint',
+    title: 'são as memorias que os videos deixam na vida das pessoas - Os Manos',
+    description:'Video de apresentação dos Manos',
+    youtubeUrl: 'https://www.youtube.com/watch?v=9FrXdwD8nk0',
+    thumbnail: '',
+    game: 'outros',
+    category: 'Vídeo longo',
+    editingStyle: 'canais-dark',
+    editorId: 'pato',
+    published: true,
+    aspectRatio: '16:9',
+    order: 3,
     },
 ]
